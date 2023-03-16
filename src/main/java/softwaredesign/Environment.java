@@ -2,13 +2,11 @@ package softwaredesign;
 
 class Environment{
     String name;
-    Boolean isRaining;
     int sunlightIntensity;
     Time timeOfDay;
 
-    public Environment(String name, Boolean isRaining, int sunlightIntensity, Time timeOfDay) {
+    public Environment(String name, int sunlightIntensity, Time timeOfDay) {
         this.name = name;
-        this.isRaining = isRaining;
         this.sunlightIntensity = sunlightIntensity;
         this.timeOfDay = timeOfDay;
     }
@@ -21,13 +19,13 @@ class Environment{
         this.name = name;
     }
 
-    public Boolean getRaining() {
+    /*public Boolean getRaining() {
         return isRaining;
     }
 
     public void setRaining(Boolean raining) {
         isRaining = raining;
-    }
+    }*/
 
     public int getSunlightIntensity() {
         return sunlightIntensity;
@@ -45,5 +43,17 @@ class Environment{
         this.timeOfDay = timeOfDay;
     }
 
-    static void setNextEnvironment() {}
+    void setNextTimeOfDay() {
+        switch (this.timeOfDay){
+            case MORNING:
+                this.timeOfDay = Time.AFTERNOON;
+                break;
+            case AFTERNOON:
+                this.timeOfDay = Time.NIGHT;
+                break;
+            case NIGHT:
+                this.timeOfDay = Time.MORNING;
+                break;
+        }
+    }
 }

@@ -1,36 +1,53 @@
 package softwaredesign;
 
-import com.sun.javafx.tk.quantum.PrimaryTimer;
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
+import java.util.Set;
+import java.util.Scanner;
 
-public class Main extends Application{
-    Button button;
-    @Override
-    public void start(Stage stage) throws Exception {
-        stage.setTitle("the Game title");
-        button = new Button();
-        button.setText("the button is pressed!!!");
-        StackPane layout = new StackPane();
-        layout.getChildren().add(button);
-        Scene scene = new Scene(layout, 300, 200);
-        stage.setScene(scene);
-        stage.show();
 
-//        String javaVersion = System.getProperty("java.version");
-//        String javafxVersion = System.getProperty("javafx.version");
-//        Label l = new Label("Hello, JavaFX " + javafxVersion + ", running on Java " + javaVersion + ".");
-//        Scene scene = new Scene(new StackPane(l), 640, 480);
-//        stage.setScene(scene);
-//        stage.show();
+public class Main {
+    public static void main (String[] args){
+        Engine engine = new Engine();
+
+        Scanner input = new Scanner(System.in);
+
+        Boolean isEnvChosen = false;
+        while(!isEnvChosen){
+            String env = input.nextLine();
+            switch (env){
+                case "Forest":
+                    engine.environment = new Environment("Forest", 2,Time.MORNING);
+                    System.out.println("Forest chosen");
+                    isEnvChosen = true;
+                    break;
+                case "Snow land":
+                    engine.environment = new Environment("Snow land", 3,Time.MORNING);
+                    System.out.println("Snow land chosen");
+                    isEnvChosen = true;
+                    break;
+                case "Desert":
+                    engine.environment = new Environment("Desert", 5,Time.MORNING);
+                    System.out.println("Desert chosen");
+                    isEnvChosen = true;
+                    break;
+                default:
+                    System.out.println("Please enter a valid environemnt.\nThe input is case sensitive!");
+                    continue;
+            }
+        }
+
+        // Make 3 objects of environment with different values
+        // User chooses environment. environment variable is going to be set to the corresponding env
+
+        // Choose the creature
+        // Make a new creature of that class and set the appropriate values
+
+
+        // Start scheduler for vitals
+        // Start scheduler for day, afternoon and night
+        // Display that game has started
+
+        // While loop to handle input
+
+
     }
-
-    public static void main(String[] args) {
-        launch(args);
-    }
-
 }
