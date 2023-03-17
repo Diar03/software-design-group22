@@ -1,53 +1,36 @@
-package softwaredesign;
+package com.example.softwaredesign;
 
-import java.util.Set;
-import java.util.Scanner;
+import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.stage.Stage;
+import java.io.IOException;
 
-
-public class Main {
-    public static void main (String[] args){
-        Engine engine = new Engine();
-
-        Scanner input = new Scanner(System.in);
-
-        Boolean isEnvChosen = false;
-        while(!isEnvChosen){
-            String env = input.nextLine();
-            switch (env){
-                case "Forest":
-                    engine.environment = new Environment("Forest", 2,Time.MORNING);
-                    System.out.println("Forest chosen");
-                    isEnvChosen = true;
-                    break;
-                case "Snow land":
-                    engine.environment = new Environment("Snow land", 3,Time.MORNING);
-                    System.out.println("Snow land chosen");
-                    isEnvChosen = true;
-                    break;
-                case "Desert":
-                    engine.environment = new Environment("Desert", 5,Time.MORNING);
-                    System.out.println("Desert chosen");
-                    isEnvChosen = true;
-                    break;
-                default:
-                    System.out.println("Please enter a valid environemnt.\nThe input is case sensitive!");
-                    continue;
-            }
+public class Main extends Application {
+    @Override
+    public void start(Stage stage) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("scene1.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        String css = this.getClass().getResource("style.css").toExternalForm();
+        scene.getStylesheets().add(css);
+        stage.setTitle("Vivarium game!");
+        stage.setScene(scene);
+        stage.show();
+        stage.setOnCloseRequest(event -> exitGame(stage));
+    }
+    public void exitGame(Stage stage){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Exiting the game!!! ");
+        alert.setHeaderText("*ALERT* Quitting Vivarium game");
+        alert.setContentText("Are you sure you want to quit “Vivarium” game??? ");
+        if(alert.showAndWait().get() == ButtonType.OK){
+            stage.close();
         }
-
-        // Make 3 objects of environment with different values
-        // User chooses environment. environment variable is going to be set to the corresponding env
-
-        // Choose the creature
-        // Make a new creature of that class and set the appropriate values
-
-
-        // Start scheduler for vitals
-        // Start scheduler for day, afternoon and night
-        // Display that game has started
-
-        // While loop to handle input
-
-
+    }
+    public static void main(String[] args) {
+        launch(args);
     }
 }
