@@ -35,12 +35,8 @@ public class Main extends Application {
         selectedEnvironment = environment;
         selectedCreature = creature;
         System.out.println("Selected " + environment + " with creature " + creature);
-        //latch.countDown(); // signal the waiting thread to continue
     }
 
-    public void darian() {
-        System.out.println("Is a bitch");
-    }
 
     public void exitGame(Stage stage){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
