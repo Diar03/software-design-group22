@@ -1,4 +1,4 @@
-package softwaredesign;
+package com.example.softwaredesign;
 
 public class Initalizer {
     String path;

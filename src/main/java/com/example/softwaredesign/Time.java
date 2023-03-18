@@ -1,4 +1,4 @@
-package softwaredesign;
+package com.example.softwaredesign;
 
 public enum Time {
     MORNING, AFTERNOON, NIGHT

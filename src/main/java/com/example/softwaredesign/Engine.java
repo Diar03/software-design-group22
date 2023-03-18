@@ -1,4 +1,8 @@
-package softwaredesign;
+package com.example.softwaredesign;
+
+import com.example.softwaredesign.Initalizer;
+import com.example.softwaredesign.Creature;
+import com.example.softwaredesign.Environment;
 
 public class Engine {
     Initalizer initalizer;
