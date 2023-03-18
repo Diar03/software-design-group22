@@ -20,7 +20,39 @@ public class Controller {
     @FXML
     private RadioButton forestButton, antarcticaButton, desertButton, vampireButton, birdButton, alienButton;
 
+    private String environmentSelected;
+    private String creatureSelected;
     private Main main;
+
+    public void forestChosen(ActionEvent e){
+        environmentSelected = "Forest";
+    }
+
+    public void antarcticaChosen(ActionEvent e){
+        environmentSelected = "Antarctica";
+    }
+
+    public void desertChosen(ActionEvent e){
+        environmentSelected = "Desert";
+    }
+    public void birdChosen(ActionEvent e){
+        creatureSelected = "Bird";
+    }
+    public void vampireChosen(ActionEvent e){
+        creatureSelected = "Vampire";
+    }
+    public void alienChosen(ActionEvent e){
+        creatureSelected = "Alien";
+    }
+
+    public void startTheGame(ActionEvent e){
+        if (environmentSelected != null && creatureSelected != null) {
+            main.startGame(environmentSelected, creatureSelected);
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Please select an environment and a creature.");
+            alert.showAndWait();
+        }
+    }
 
     public void setMain(Main theMainInstance){
         this.main = theMainInstance;
