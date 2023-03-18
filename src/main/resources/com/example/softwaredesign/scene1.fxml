@@ -33,12 +33,12 @@
             <Font size="36.0" />
          </font>
       </Label>
-      <Button layoutX="234.0" layoutY="420.0" mnemonicParsing="false" onAction="#startTheGame" prefHeight="46.0" prefWidth="178.0" style="-fx-background-color: Black; -fx-border-color: White;" text="Start game" textFill="WHITE">
+      <Button layoutX="234.0" layoutY="420.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="178.0" style="-fx-background-color: Black; -fx-border-color: White;" text="Start game" textFill="WHITE">
          <font>
             <Font size="22.0" />
          </font>
       </Button>
-      <RadioButton graphicTextGap="15.0" layoutX="48.0" layoutY="161.0" mnemonicParsing="false" onAction="#forestSelected" prefHeight="46.0" prefWidth="161.0" style="-fx-background-color: Lightgray; -fx-border-color: White; -fx-text-fill: White;" text="Forest" textAlignment="CENTER">
+      <RadioButton graphicTextGap="15.0" layoutX="48.0" layoutY="161.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="161.0" style="-fx-background-color: Lightgray; -fx-border-color: White; -fx-text-fill: White;" text="Forest" textAlignment="CENTER">
          <toggleGroup>
             <ToggleGroup fx:id="environment" />
          </toggleGroup>
@@ -52,7 +52,7 @@
             <Reflection />
          </effect>
       </RadioButton>
-      <RadioButton graphicTextGap="15.0" layoutX="246.0" layoutY="161.0" mnemonicParsing="false" onAction="#antarcticaSelected" prefHeight="46.0" prefWidth="161.0" style="-fx-background-color: Lightgray; -fx-border-color: White; -fx-text-fill: White;" text="Antarctica" textAlignment="CENTER" toggleGroup="$environment">
+      <RadioButton graphicTextGap="15.0" layoutX="246.0" layoutY="161.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="161.0" style="-fx-background-color: Lightgray; -fx-border-color: White; -fx-text-fill: White;" text="Antarctica" textAlignment="CENTER" toggleGroup="$environment">
          <font>
             <Font name="Times New Roman" size="20.0" />
          </font>
@@ -63,7 +63,7 @@
             <Reflection />
          </effect>
       </RadioButton>
-      <RadioButton graphicTextGap="15.0" layoutX="442.0" layoutY="161.0" mnemonicParsing="false" onAction="#desertSelected" prefHeight="46.0" prefWidth="161.0" style="-fx-background-color: Lightgray; -fx-border-color: White; -fx-text-fill: White;" text="Desert" textAlignment="CENTER" toggleGroup="$environment">
+      <RadioButton graphicTextGap="15.0" layoutX="442.0" layoutY="161.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="161.0" style="-fx-background-color: Lightgray; -fx-border-color: White; -fx-text-fill: White;" text="Desert" textAlignment="CENTER" toggleGroup="$environment">
          <font>
             <Font name="Times New Roman" size="20.0" />
          </font>
@@ -74,7 +74,7 @@
             <Reflection />
          </effect>
       </RadioButton>
-      <RadioButton graphicTextGap="15.0" layoutX="48.0" layoutY="315.0" mnemonicParsing="false" onAction="#vampireSelected" prefHeight="46.0" prefWidth="161.0" style="-fx-background-color: Lightgray; -fx-border-color: White; -fx-text-fill: White;" text="Vampire" textAlignment="CENTER">
+      <RadioButton graphicTextGap="15.0" layoutX="48.0" layoutY="315.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="161.0" style="-fx-background-color: Lightgray; -fx-border-color: White; -fx-text-fill: White;" text="Vampire" textAlignment="CENTER">
          <font>
             <Font name="Times New Roman" size="20.0" />
          </font>
@@ -88,7 +88,7 @@
             <ToggleGroup fx:id="creature" />
          </toggleGroup>
       </RadioButton>
-      <RadioButton graphicTextGap="15.0" layoutX="247.0" layoutY="315.0" mnemonicParsing="false" onAction="#birdSelected" prefHeight="46.0" prefWidth="161.0" style="-fx-background-color: Lightgray; -fx-border-color: White; -fx-text-fill: White;" text="Bird" textAlignment="CENTER" toggleGroup="$creature">
+      <RadioButton graphicTextGap="15.0" layoutX="243.0" layoutY="315.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="161.0" style="-fx-background-color: Lightgray; -fx-border-color: White; -fx-text-fill: White;" text="Bird" textAlignment="CENTER" toggleGroup="$creature">
          <font>
             <Font name="Times New Roman" size="20.0" />
          </font>
@@ -99,7 +99,7 @@
             <Reflection />
          </effect>
       </RadioButton>
-      <RadioButton graphicTextGap="15.0" layoutX="442.0" layoutY="315.0" mnemonicParsing="false" onAction="#alienSelected" prefHeight="46.0" prefWidth="161.0" style="-fx-background-color: Lightgray; -fx-border-color: White; -fx-text-fill: White;" text="Alien" textAlignment="CENTER" toggleGroup="$creature">
+      <RadioButton graphicTextGap="15.0" layoutX="442.0" layoutY="315.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="161.0" style="-fx-background-color: Lightgray; -fx-border-color: White; -fx-text-fill: White;" text="Alien" textAlignment="CENTER" toggleGroup="$creature">
          <font>
             <Font name="Times New Roman" size="20.0" />
          </font>

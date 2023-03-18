@@ -18,19 +18,17 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws IOException, InterruptedException {
         FXMLLoader loader = new FXMLLoader(Main.class.getResource("scene1.fxml"));
+        System.out.println("Stage about to be shown");
         Parent root = loader.load();
         Controller controller = loader.getController();
-        if(controller.selectedEnvironment == null){
-            System.out.println("NULLLLL");
-        }
+        controller.setMain(this);
         Scene scene = new Scene(root);
         stage.setScene(scene);
-        //stage.show();
-        /*while (true){
-            if(controller.selectedCreature != null && controller.selectedEnvironment != null){
-                System.out.println("Creature: " + controller.selectedCreature + " Environment: " + controller.selectedEnvironment);
-            }
-        }*/
+        stage.show();
+        stage.setOnCloseRequest(event -> {
+            event.consume();
+            exitGame(stage);
+        });
     }
 
     public void startGame(String environment, String creature) {
@@ -38,6 +36,10 @@ public class Main extends Application {
         selectedCreature = creature;
         System.out.println("Selected " + environment + " with creature " + creature);
         //latch.countDown(); // signal the waiting thread to continue
+    }
+
+    public void darian() {
+        System.out.println("Is a bitch");
     }
 
     public void exitGame(Stage stage){
