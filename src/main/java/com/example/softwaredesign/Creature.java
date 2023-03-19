@@ -1,9 +1,13 @@
 package com.example.softwaredesign;
 
+import javafx.scene.image.Image;
+
 import java.util.*;
 
 abstract class Creature {
      int coins;
+
+     Image sprite;
      Boolean isHungry;
      Set<Vital> vitals;
      Map<Food, Integer> inventory;
@@ -18,6 +22,7 @@ abstract class Creature {
 class Bird extends Creature {
 
     public Bird(){
+        this.sprite = new Image(getClass().getResourceAsStream("tweetyIdle.png"));
         this.initVitals();
         this.isHungry = false;
         this.inventory = new HashMap<Food, Integer>();
@@ -39,6 +44,7 @@ class Bird extends Creature {
 class Vampire extends Creature {
     Boolean isBurning;
     public Vampire(){
+        this.sprite = new Image(getClass().getResourceAsStream("vampireIdle.png"));
         this.initVitals();
         this.isHungry = false;
         this.isBurning = false;
@@ -59,6 +65,7 @@ class Vampire extends Creature {
 class Alien extends Creature {
 
     public Alien(){
+        this.sprite = new Image(getClass().getResourceAsStream("alienIdle.png"));
         this.initVitals();
         this.isHungry = false;
         this.inventory = new HashMap<Food, Integer>();

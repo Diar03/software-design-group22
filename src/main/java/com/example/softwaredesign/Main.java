@@ -14,9 +14,7 @@ import java.util.concurrent.CountDownLatch;
 public class Main extends Application {
     Parent root;
     public Scene scene;
-
-
-    private Engine engine;
+    public Engine engine;
 
     @Override
     public void start(Stage stage) throws IOException, InterruptedException {
@@ -42,35 +40,17 @@ public class Main extends Application {
         });
     }
 
-    public void startGame(String environment, String creature) throws IOException {
-
-        switch (environment){
-            case "Forest":
-                engine.setEnvironment(new Environment("Forest", 4, Time.MORNING));
-                break;
-            case "Antarctica":
-                engine.setEnvironment(new Environment("Antarctica", 2, Time.MORNING));
-                break;
-            case "Desert":
-                engine.setEnvironment(new Environment("Desert", 10, Time.MORNING));
-                break;
-            default:
-                System.err.println("Wrong value passed to start game. Please exit and restart game");
+    public void buyFood(Food item){
+        Integer currentVal = engine.creature.inventory.get(item);
+        if(currentVal == null){
+            engine.creature.inventory.put(item, 1);
+        }else{
+            engine.creature.inventory.put(item, currentVal + 1);
         }
+        System.out.println(engine.creature.inventory);
+    }
 
-        switch (creature){
-            case "Vampire":
-                engine.setCreature(new Vampire());
-                break;
-            case "Bird":
-                engine.setCreature(new Bird());
-                break;
-            case "Alien":
-                engine.setCreature(new Alien());
-                break;
-            default:
-                System.err.println("Wrong value passed to start game. Please exit and restart game");
-        }
+    public void eatFood(Food item){
 
     }
 

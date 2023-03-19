@@ -1,12 +1,19 @@
 package com.example.softwaredesign;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import org.controlsfx.control.action.Action;
 
 import java.io.FileInputStream;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class GameController {
+public class GameController implements Initializable {
     private Main main;
 
     @FXML
@@ -15,40 +22,27 @@ public class GameController {
     @FXML
     private ImageView creatureView;
 
+    @FXML
+    private ComboBox<Food> shop;
+
+    private Food[] shopItems = {Food.MEAT, Food.SALAD};
+
+    @Override
+    public void initialize(URL arg0, ResourceBundle arg1){
+        shop.getItems().addAll(shopItems);
+        shop.setOnAction(this::buyFood);
+    }
+
+    public void buyFood(ActionEvent event){
+        Food choice = shop.getValue();
+        main.buyFood(choice);
+    }
+
     public void loadImages(String env, String creature){
-        Image environmentImage;
-        Image creatureImage;
 
-        // The switch cases below adapt the scene to the environment and creature chosen
-        switch (env){
-            case "Forest":
-                environmentImage = new Image(getClass().getResourceAsStream("forestDay.png"));
-                environmentView.setImage(environmentImage);
-                break;
-            case "Desert":
-                environmentImage = new Image(getClass().getResourceAsStream("desertDay.png"));
-                environmentView.setImage(environmentImage);
-                break;
-            case "Antarctica":
-                environmentImage = new Image(getClass().getResourceAsStream("iceDay.png"));
-                environmentView.setImage(environmentImage);
-                break;
-        }
+        environmentView.setImage(main.engine.getEnvironment().sprite);
+        creatureView.setImage(main.engine.getCreature().sprite);
 
-        switch (creature){
-            case "Bird":
-                creatureImage = new Image(getClass().getResourceAsStream("tweetyIdle.png"));
-                creatureView.setImage(creatureImage);
-                break;
-            case "Vampire":
-                creatureImage = new Image(getClass().getResourceAsStream("vampireIdle.png"));
-                creatureView.setImage(creatureImage);
-                break;
-            case "Alien":
-                creatureImage = new Image(getClass().getResourceAsStream("alienIdle.png"));
-                creatureView.setImage(creatureImage);
-                break;
-        }
     }
     public void eat(){
         System.out.println("Eating");
