@@ -1,25 +1,66 @@
 package com.example.softwaredesign;
 
+import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 
 import java.util.*;
 
 abstract class Creature {
-     int coins;
-
+     int coins = 50;
      Image sprite;
      Boolean isHungry;
-     Set<Vital> vitals;
+
+     Vital hunger;
+     Vital health;
+     //Set<Vital> vitals;
      Map<Food, Integer> inventory;
 
     static void playMiniGame() {}
     static void sleep() {}
     abstract void initVitals();
     static void increaseCoins(int value) {}
-    static void eat(Food food){}
+    public void eat(Food food){
+
+        if(!inventory.containsKey(food)){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setContentText("You do not have any " + food.toString() + " left");
+            alert.showAndWait();
+            return;
+        }
+
+
+        if(inventory.get(food) < 1){
+            System.out.println("NO FOOD LEFT");
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setContentText("You do not have any " + food.toString() + " left");
+            alert.showAndWait();
+            return;
+        }
+
+        switch (food){
+            case MEAT:
+                if((hunger.getPercentageLevel() + 20) > 100){
+                    hunger.increaseVital(100 - hunger.getPercentageLevel());
+                }else{
+                    hunger.increaseVital(20);
+                }
+                break;
+            case SALAD:
+                if((hunger.getPercentageLevel() + 25) > 100){
+                    hunger.increaseVital(100 - hunger.getPercentageLevel());
+                }else{
+                    hunger.increaseVital(25);
+                }
+                break;
+        }
+
+        inventory.put(food, inventory.get(food) - 1);
+    }
 }
 
 class Bird extends Creature {
+
+    Vital flight;
 
     public Bird(){
         this.sprite = new Image(getClass().getResourceAsStream("tweetyIdle.png"));
@@ -29,13 +70,9 @@ class Bird extends Creature {
     }
     @Override
     void initVitals() {
-        Vital flight = new Vital(50, "Flight");
-        Vital hunger = new Vital(50, "Hunger");
-        Vital health = new Vital(50, "Health");
-        this.vitals = new HashSet<Vital>();
-        this.vitals.add(flight);
-        this.vitals.add(hunger);
-        this.vitals.add(health);
+        flight = new Vital(50, "Flight");
+        hunger = new Vital(50, "Hunger");
+        health = new Vital(50, "Health");
     }
 
     static void fly(){}
@@ -43,6 +80,7 @@ class Bird extends Creature {
 
 class Vampire extends Creature {
     Boolean isBurning;
+    Vital photosensitivity;
     public Vampire(){
         this.sprite = new Image(getClass().getResourceAsStream("vampireIdle.png"));
         this.initVitals();
@@ -52,18 +90,14 @@ class Vampire extends Creature {
     }
     @Override
     void initVitals() {
-        Vital photosensitivity = new Vital(50, "Photosensitivity");
-        Vital hunger = new Vital(50, "Hunger");
-        Vital health = new Vital(50, "Health");
-        this.vitals = new HashSet<Vital>();
-        this.vitals.add(photosensitivity);
-        this.vitals.add(hunger);
-        this.vitals.add(health);
+        photosensitivity = new Vital(50, "Photosensitivity");
+        hunger = new Vital(50, "Hunger");
+        health = new Vital(50, "Health");
     }
 }
 
 class Alien extends Creature {
-
+    Vital shapeshift;
     public Alien(){
         this.sprite = new Image(getClass().getResourceAsStream("alienIdle.png"));
         this.initVitals();
@@ -72,13 +106,9 @@ class Alien extends Creature {
     }
     @Override
     void initVitals() {
-        Vital shapeshift = new Vital(50, "Shapeshift");
-        Vital hunger = new Vital(50, "Hunger");
-        Vital health = new Vital(50, "Health");
-        this.vitals = new HashSet<Vital>();
-        this.vitals.add(shapeshift);
-        this.vitals.add(hunger);
-        this.vitals.add(health);
+        shapeshift = new Vital(50, "Shapeshift");
+        hunger = new Vital(50, "Hunger");
+        health = new Vital(50, "Health");
     }
 
     static void changeShape() {}

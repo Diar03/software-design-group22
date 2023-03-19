@@ -28,6 +28,7 @@ public class Controller {
 
     private String environmentselected;
     private String creatureSelected;
+
     private Main main;
 
     public void forestChosen(ActionEvent e){
@@ -51,7 +52,6 @@ public class Controller {
 
     public void startTheGame(ActionEvent e) throws IOException {
         if (environmentselected != null && creatureSelected != null) {
-            //main.startGame(environmentselected, creatureSelected);
 
             switch (environmentselected){
                 case "Forest":
@@ -85,7 +85,7 @@ public class Controller {
             root = loader.load();
             GameController controller = loader.getController();
             controller.setMain(main);
-            controller.loadImages(environmentselected, creatureSelected);
+            controller.loadImages();
 
             stage = (Stage) ((Node)e.getSource()).getScene().getWindow();
             scene = new Scene(root);

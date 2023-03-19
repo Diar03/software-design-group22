@@ -9,7 +9,7 @@ public class Vital {
         this.name = name;
     }
 
-    public static int getPercentageLevel() {
+    public int getPercentageLevel() {
         return percentageLevel;
     }
 
@@ -25,12 +25,12 @@ public class Vital {
         this.name = name;
     }
 
-    public static int increaseVital(int value){
+    public int increaseVital(int value){
         int newVal =  getPercentageLevel();
         newVal = newVal + value;
         return newVal;
     }
-    public static int decreaseVital(int value){
+    public int decreaseVital(int value){
         int newVal =  getPercentageLevel();
         newVal = newVal - value;
         return newVal;

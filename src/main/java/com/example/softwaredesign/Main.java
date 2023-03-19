@@ -9,7 +9,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 import java.io.IOException;
-import java.util.concurrent.CountDownLatch;
 
 public class Main extends Application {
     Parent root;
@@ -40,7 +39,31 @@ public class Main extends Application {
         });
     }
 
+
     public void buyFood(Food item){
+        switch (item){
+            case SALAD:
+                if(engine.creature.coins < 20){
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setContentText("Not enough coins to buy this item");
+                    alert.showAndWait();
+                    return;
+                }else{
+                    engine.creature.coins -= 20;
+                }
+                break;
+            case MEAT:
+                if(engine.creature.coins < 25){
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setContentText("Not enough coins to buy this item");
+                    alert.showAndWait();
+                    return;
+                }else{
+                    engine.creature.coins -= 25;
+                }
+                break;
+        }
+
         Integer currentVal = engine.creature.inventory.get(item);
         if(currentVal == null){
             engine.creature.inventory.put(item, 1);
