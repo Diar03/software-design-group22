@@ -1,6 +1,7 @@
 package com.example.softwaredesign;
 
 import javafx.application.Application;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -11,19 +12,29 @@ import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 
 public class Main extends Application {
-    private String selectedEnvironment;
-    private String selectedCreature;
-    private CountDownLatch latch;
+    Parent root;
+    public Scene scene;
+
+
+    private Engine engine;
 
     @Override
     public void start(Stage stage) throws IOException, InterruptedException {
+        // Create engine instance
+        engine = new Engine();
+
+        // Load the initial scene
         FXMLLoader loader = new FXMLLoader(Main.class.getResource("scene1.fxml"));
-        System.out.println("Stage about to be shown");
-        Parent root = loader.load();
+        root = loader.load();
         Controller controller = loader.getController();
+
+        // Pass reference of main to the controller
         controller.setMain(this);
-        Scene scene = new Scene(root);
+
+        // Make and show the scene
+        scene = new Scene(root);
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
         stage.setOnCloseRequest(event -> {
             event.consume();
@@ -31,10 +42,36 @@ public class Main extends Application {
         });
     }
 
-    public void startGame(String environment, String creature) {
-        selectedEnvironment = environment;
-        selectedCreature = creature;
-        System.out.println("Selected " + environment + " with creature " + creature);
+    public void startGame(String environment, String creature) throws IOException {
+
+        switch (environment){
+            case "Forest":
+                engine.setEnvironment(new Environment("Forest", 4, Time.MORNING));
+                break;
+            case "Antarctica":
+                engine.setEnvironment(new Environment("Antarctica", 2, Time.MORNING));
+                break;
+            case "Desert":
+                engine.setEnvironment(new Environment("Desert", 10, Time.MORNING));
+                break;
+            default:
+                System.err.println("Wrong value passed to start game. Please exit and restart game");
+        }
+
+        switch (creature){
+            case "Vampire":
+                engine.setCreature(new Vampire());
+                break;
+            case "Bird":
+                engine.setCreature(new Bird());
+                break;
+            case "Alien":
+                engine.setCreature(new Alien());
+                break;
+            default:
+                System.err.println("Wrong value passed to start game. Please exit and restart game");
+        }
+
     }
 
 

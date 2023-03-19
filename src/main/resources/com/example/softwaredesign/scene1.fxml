@@ -63,7 +63,7 @@
             <Reflection />
          </effect>
       </RadioButton>
-      <RadioButton graphicTextGap="15.0" layoutX="442.0" layoutY="161.0" mnemonicParsing="false" onAction="#antarcticaChosen" prefHeight="46.0" prefWidth="161.0" style="-fx-background-color: Lightgray; -fx-border-color: White; -fx-text-fill: White;" text="Desert" textAlignment="CENTER" toggleGroup="$environment">
+      <RadioButton graphicTextGap="15.0" layoutX="442.0" layoutY="161.0" mnemonicParsing="false" onAction="#desertChosen" prefHeight="46.0" prefWidth="161.0" style="-fx-background-color: Lightgray; -fx-border-color: White; -fx-text-fill: White;" text="Desert" textAlignment="CENTER" toggleGroup="$environment">
          <font>
             <Font name="Times New Roman" size="20.0" />
          </font>

@@ -1,140 +1,77 @@
 package com.example.softwaredesign;
 
-import java.util.ArrayList;
+import java.util.*;
+
 abstract class Creature {
-     String deathSound;
      int coins;
      Boolean isHungry;
-     Vital health;
-     Vital hunger;
-     ArrayList<Food> inventory = new ArrayList<Food>();
-
-    public Creature(String deathSound, int coins, Boolean isHungry, Vital health, Vital hunger, ArrayList<Food> inventory) {
-        this.deathSound = deathSound;
-        this.coins = coins;
-        this.isHungry = isHungry;
-        this.health = health;
-        this.hunger = hunger;
-        this.inventory = inventory;
-    }
-
-    public String getDeathSound() {
-        return deathSound;
-    }
-
-    public void setDeathSound(String deathSound) {
-        this.deathSound = deathSound;
-    }
-
-    public int getCoins() {
-        return coins;
-    }
-
-    public void setCoins(int coins) {
-        this.coins = coins;
-    }
-
-    public Boolean getHungry() {
-        return isHungry;
-    }
-
-    public void setHungry(Boolean hungry) {
-        isHungry = hungry;
-    }
-
-    public Vital getHealth() {
-        return health;
-    }
-
-    public void setHealth(Vital health) {
-        this.health = health;
-    }
-
-    public Vital getHunger() {
-        return hunger;
-    }
-
-    public void setHunger(Vital hunger) {
-        this.hunger = hunger;
-    }
-
-    public ArrayList<Food> getInventory() {
-        return inventory;
-    }
-
-    public void setInventory(ArrayList<Food> inventory) {
-        this.inventory = inventory;
-    }
+     Set<Vital> vitals;
+     Map<Food, Integer> inventory;
 
     static void playMiniGame() {}
     static void sleep() {}
-    static void initVitals() {}
+    abstract void initVitals();
     static void increaseCoins(int value) {}
     static void eat(Food food){}
 }
 
 class Bird extends Creature {
-    Vital flight;
 
-    public Bird(String deathSound, int coins, Boolean isHungry, Vital health, Vital hunger, ArrayList<Food> inventory, Vital flight) {
-        super(deathSound, coins, isHungry, health, hunger, inventory);
-        this.flight = flight;
+    public Bird(){
+        this.initVitals();
+        this.isHungry = false;
+        this.inventory = new HashMap<Food, Integer>();
     }
-
-    public Vital getFlight() {
-        return flight;
-    }
-
-    public void setFlight(Vital flight) {
-        this.flight = flight;
+    @Override
+    void initVitals() {
+        Vital flight = new Vital(50, "Flight");
+        Vital hunger = new Vital(50, "Hunger");
+        Vital health = new Vital(50, "Health");
+        this.vitals = new HashSet<Vital>();
+        this.vitals.add(flight);
+        this.vitals.add(hunger);
+        this.vitals.add(health);
     }
 
     static void fly(){}
 }
 
 class Vampire extends Creature {
-    Vital photosensitivity;
     Boolean isBurning;
-
-    public Vampire(String deathSound, int coins, Boolean isHungry, Vital health, Vital hunger, ArrayList<Food> inventory, Vital photosensitivity, Boolean isBurning) {
-        super(deathSound, coins, isHungry, health, hunger, inventory);
-        this.photosensitivity = photosensitivity;
-        this.isBurning = isBurning;
+    public Vampire(){
+        this.initVitals();
+        this.isHungry = false;
+        this.isBurning = false;
+        this.inventory = new HashMap<Food, Integer>();
     }
-
-    public Vital getPhotosensitivity() {
-        return photosensitivity;
+    @Override
+    void initVitals() {
+        Vital photosensitivity = new Vital(50, "Photosensitivity");
+        Vital hunger = new Vital(50, "Hunger");
+        Vital health = new Vital(50, "Health");
+        this.vitals = new HashSet<Vital>();
+        this.vitals.add(photosensitivity);
+        this.vitals.add(hunger);
+        this.vitals.add(health);
     }
-
-    public void setPhotosensitivity(Vital photosensitivity) {
-        this.photosensitivity = photosensitivity;
-    }
-
-    public Boolean getBurning() {
-        return isBurning;
-    }
-
-    public void setBurning(Boolean burning) {
-        isBurning = burning;
-    }
-
-    static int checkSunlight(){return 10;}
 }
 
 class Alien extends Creature {
-    Vital shapeShift;
 
-    public Alien(String deathSound, int coins, Boolean isHungry, Vital health, Vital hunger, ArrayList<Food> inventory, Vital shapeShift) {
-        super(deathSound, coins, isHungry, health, hunger, inventory);
-        this.shapeShift = shapeShift;
+    public Alien(){
+        this.initVitals();
+        this.isHungry = false;
+        this.inventory = new HashMap<Food, Integer>();
     }
-
-    public Vital getShapeShift() {
-        return shapeShift;
-    }
-
-    public void setShapeShift(Vital shapeShift) {
-        this.shapeShift = shapeShift;
+    @Override
+    void initVitals() {
+        Vital shapeshift = new Vital(50, "Shapeshift");
+        Vital hunger = new Vital(50, "Hunger");
+        Vital health = new Vital(50, "Health");
+        this.vitals = new HashSet<Vital>();
+        this.vitals.add(shapeshift);
+        this.vitals.add(hunger);
+        this.vitals.add(health);
     }
 
     static void changeShape() {}
