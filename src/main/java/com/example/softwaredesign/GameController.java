@@ -19,6 +19,7 @@ public class GameController {
         Image environmentImage;
         Image creatureImage;
 
+        // The switch cases below adapt the scene to the environment and creature chosen
         switch (env){
             case "Forest":
                 environmentImage = new Image(getClass().getResourceAsStream("forestDay.png"));
@@ -40,11 +41,11 @@ public class GameController {
                 creatureView.setImage(creatureImage);
                 break;
             case "Vampire":
-                creatureImage = new Image(getClass().getResourceAsStream("tweetyIdle.png"));
+                creatureImage = new Image(getClass().getResourceAsStream("vampireIdle.png"));
                 creatureView.setImage(creatureImage);
                 break;
             case "Alien":
-                creatureImage = new Image(getClass().getResourceAsStream("tweetyIdle.png"));
+                creatureImage = new Image(getClass().getResourceAsStream("alienIdle.png"));
                 creatureView.setImage(creatureImage);
                 break;
         }
