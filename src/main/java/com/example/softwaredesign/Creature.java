@@ -100,7 +100,7 @@ class Bird extends Creature {
         health = new Vital(50, "Health");
     }
 
-    static void fly(){}
+    public void fly(){}
 }
 
 class Vampire extends Creature {
@@ -172,5 +172,5 @@ class Alien extends Creature {
         health = new Vital(50, "Health");
     }
 
-    static void changeShape() {}
+    public void changeShape() {}
 }

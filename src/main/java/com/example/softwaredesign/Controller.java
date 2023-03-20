@@ -85,6 +85,7 @@ public class Controller {
             root = loader.load();
             GameController controller = loader.getController();
             controller.setMain(main);
+            controller.adaptScreenToCreature();
             controller.loadImages();
 
             stage = (Stage) ((Node)e.getSource()).getScene().getWindow();
