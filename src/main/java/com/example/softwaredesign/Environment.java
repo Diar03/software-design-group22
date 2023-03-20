@@ -6,7 +6,8 @@ import javafx.scene.image.Image;
 class Environment{
     String name;
 
-    Image sprite;
+    Image daySprite;
+    Image nightSprite;
     int sunlightIntensity;
     Time timeOfDay;
 
@@ -14,13 +15,16 @@ class Environment{
         this.name = name;
         switch (name){
             case "Forest":
-                sprite = new Image(getClass().getResourceAsStream("forestDay.png"));
+                daySprite = new Image(getClass().getResourceAsStream("forestDay.png"));
+                nightSprite = new Image(getClass().getResourceAsStream("forestNight.png"));
                 break;
             case "Desert":
-                sprite = new Image(getClass().getResourceAsStream("desertDay.png"));
+                daySprite = new Image(getClass().getResourceAsStream("desertDay.png"));
+                nightSprite = new Image(getClass().getResourceAsStream("DesertNight.png"));
                 break;
             case "Antarctica":
-                sprite = new Image(getClass().getResourceAsStream("iceDay.png"));
+                daySprite = new Image(getClass().getResourceAsStream("iceDay.png"));
+                nightSprite = new Image(getClass().getResourceAsStream("iceDark.png"));
                 break;
             default:
                 System.out.println("No such environment found");

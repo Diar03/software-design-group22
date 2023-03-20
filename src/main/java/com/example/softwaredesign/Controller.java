@@ -69,13 +69,13 @@ public class Controller {
 
             switch (creatureSelected){
                 case "Vampire":
-                    main.engine.setCreature(new Vampire());
+                    main.engine.setCreature(new Vampire(main.engine.environment));
                     break;
                 case "Bird":
-                    main.engine.setCreature(new Bird());
+                    main.engine.setCreature(new Bird(main.engine.environment));
                     break;
                 case "Alien":
-                    main.engine.setCreature(new Alien());
+                    main.engine.setCreature(new Alien(main.engine.environment));
                     break;
                 default:
                     System.err.println("Wrong value passed to start game. Please exit and restart game");
@@ -92,7 +92,7 @@ public class Controller {
             scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
-            main.initSchedulers();
+            main.initSchedulers(controller);
 
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Please select an environment and a creature.");

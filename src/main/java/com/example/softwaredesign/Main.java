@@ -1,7 +1,6 @@
 package com.example.softwaredesign;
 
 import javafx.application.Application;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -9,11 +8,15 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class Main extends Application {
     Parent root;
     public Scene scene;
     public Engine engine;
+
 
     @Override
     public void start(Stage stage) throws IOException, InterruptedException {
@@ -39,8 +42,26 @@ public class Main extends Application {
         });
     }
 
-    public void initSchedulers(){
+    public void initSchedulers(GameController controller){
+        Runnable VitalUpdater = new Runnable() {
+            public void run() {
+                System.out.println("Vitals being updated");
+                engine.creature.update();
+                controller.updateBars();
 
+            }
+        };
+        Runnable TimeUpdater = new Runnable() {
+            public void run() {
+                engine.getEnvironment().setNextTimeOfDay();
+                controller.updateTime();
+            }
+        };
+
+        ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+        executor.scheduleAtFixedRate(VitalUpdater, 5, 10, TimeUnit.SECONDS);
+        ScheduledExecutorService exe = Executors.newScheduledThreadPool(1);
+        exe.scheduleAtFixedRate(TimeUpdater, 20, 30, TimeUnit.SECONDS);
     }
 
 
@@ -74,10 +95,6 @@ public class Main extends Application {
         }else{
             engine.creature.inventory.put(item, currentVal + 1);
         }
-        System.out.println(engine.creature.inventory);
-    }
-
-    public void eatFood(Food item){
 
     }
 

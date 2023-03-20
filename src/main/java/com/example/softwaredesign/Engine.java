@@ -4,8 +4,6 @@ public class Engine {
     Initalizer initalizer;
     Creature creature;
     Environment environment;
-    //add the map with String to Image
-
 
     public Creature getCreature() {
         return creature;

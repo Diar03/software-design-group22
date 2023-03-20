@@ -1,12 +1,12 @@
 package com.example.softwaredesign;
 
 public class Vital {
-    private static int percentageLevel;
-    private static String name;
+    private int percentageLevel;
+    private String name;
 
     public Vital(int percentageLevel, String name) {
-        this.percentageLevel = percentageLevel;
-        this.name = name;
+        setPercentageLevel(percentageLevel);
+        setName(name);
     }
 
     public int getPercentageLevel() {
@@ -25,14 +25,12 @@ public class Vital {
         this.name = name;
     }
 
-    public int increaseVital(int value){
+    public void increaseVital(int value){
         int newVal =  getPercentageLevel();
-        newVal = newVal + value;
-        return newVal;
+        setPercentageLevel(newVal + value);
     }
-    public int decreaseVital(int value){
+    public void decreaseVital(int value){
         int newVal =  getPercentageLevel();
-        newVal = newVal - value;
-        return newVal;
+        setPercentageLevel(newVal - value);
     }
 }

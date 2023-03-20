@@ -3,7 +3,8 @@ package com.example.softwaredesign;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 abstract class Creature {
      int coins = 50;
@@ -54,7 +55,6 @@ abstract class Creature {
 
 
         if(inventory.get(food) < 1){
-            System.out.println("NO FOOD LEFT");
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setContentText("You do not have any " + food.toString() + " left");
             alert.showAndWait();
@@ -86,10 +86,11 @@ class Bird extends Creature {
 
     Vital flight;
 
-    public Bird(){
+    public Bird(Environment env){
         this.sprite = new Image(getClass().getResourceAsStream("tweetyIdle.png"));
         this.initVitals();
         this.isHungry = false;
+        this.environment = env;
         this.inventory = new HashMap<Food, Integer>();
         this.name = "Bird";
     }
@@ -106,11 +107,12 @@ class Bird extends Creature {
 class Vampire extends Creature {
     Boolean isBurning;
     Vital photosensitivity;
-    public Vampire(){
+    public Vampire(Environment env){
         this.sprite = new Image(getClass().getResourceAsStream("vampireIdle.png"));
-        this.initVitals();
+        initVitals();
         this.isHungry = false;
         this.isBurning = false;
+        this.environment = env;
         this.inventory = new HashMap<Food, Integer>();
         this.name = "Vampire";
     }
@@ -119,12 +121,13 @@ class Vampire extends Creature {
         photosensitivity = new Vital(50, "Photosensitivity");
         hunger = new Vital(50, "Hunger");
         health = new Vital(50, "Health");
+
     }
 
     @Override
     public boolean update() {
 
-        if(environment.timeOfDay.equals(Time.DAY)){
+        if(environment.timeOfDay == Time.DAY){
             int currentIntensity = environment.getSunlightIntensity();
             photosensitivity.decreaseVital(currentIntensity);
         }
@@ -133,9 +136,11 @@ class Vampire extends Creature {
             isHungry = true;
         }
 
+
         if(photosensitivity.getPercentageLevel() < 20){
             isBurning = true;
         }
+
 
         if(isHungry){
             hunger.decreaseVital(2);
@@ -153,16 +158,18 @@ class Vampire extends Creature {
         }else{
             return true;
         }
+
     }
 }
 
 class Alien extends Creature {
     Vital shapeshift;
-    public Alien(){
+    public Alien(Environment env){
         this.sprite = new Image(getClass().getResourceAsStream("alienIdle.png"));
-        this.initVitals();
+        initVitals();
         this.isHungry = false;
-        this.inventory = new HashMap<Food, Integer>();
+        this.environment = env;
+        this.inventory = new HashMap<>();
         this.name = "Alien";
     }
     @Override
