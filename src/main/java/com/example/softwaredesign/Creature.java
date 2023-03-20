@@ -10,6 +10,10 @@ abstract class Creature {
      Image sprite;
      Boolean isHungry;
 
+     String name;
+
+     Environment environment;
+
      Vital hunger;
      Vital health;
      //Set<Vital> vitals;
@@ -18,6 +22,26 @@ abstract class Creature {
     static void playMiniGame() {}
     static void sleep() {}
     abstract void initVitals();
+
+    public boolean update(){
+        int currentHunger = hunger.getPercentageLevel();
+        if(currentHunger < 20){
+            isHungry = true;
+        }
+
+        if(isHungry){
+            hunger.decreaseVital(2);
+            health.decreaseVital(2);
+        }else{
+            hunger.decreaseVital(3);
+        }
+
+        if(health.getPercentageLevel() <= 0){
+            return false;
+        }else{
+            return true;
+        }
+    }
     static void increaseCoins(int value) {}
     public void eat(Food food){
 
@@ -67,6 +91,7 @@ class Bird extends Creature {
         this.initVitals();
         this.isHungry = false;
         this.inventory = new HashMap<Food, Integer>();
+        this.name = "Bird";
     }
     @Override
     void initVitals() {
@@ -87,12 +112,47 @@ class Vampire extends Creature {
         this.isHungry = false;
         this.isBurning = false;
         this.inventory = new HashMap<Food, Integer>();
+        this.name = "Vampire";
     }
     @Override
     void initVitals() {
         photosensitivity = new Vital(50, "Photosensitivity");
         hunger = new Vital(50, "Hunger");
         health = new Vital(50, "Health");
+    }
+
+    @Override
+    public boolean update() {
+
+        if(environment.timeOfDay.equals(Time.DAY)){
+            int currentIntensity = environment.getSunlightIntensity();
+            photosensitivity.decreaseVital(currentIntensity);
+        }
+
+        if(hunger.getPercentageLevel() < 20){
+            isHungry = true;
+        }
+
+        if(photosensitivity.getPercentageLevel() < 20){
+            isBurning = true;
+        }
+
+        if(isHungry){
+            hunger.decreaseVital(2);
+            health.decreaseVital(2);
+        }else{
+            hunger.decreaseVital(3);
+        }
+
+        if(isBurning){
+            health.decreaseVital(5);
+        }
+
+        if(health.getPercentageLevel() <= 0){
+            return false;
+        }else{
+            return true;
+        }
     }
 }
 
@@ -103,6 +163,7 @@ class Alien extends Creature {
         this.initVitals();
         this.isHungry = false;
         this.inventory = new HashMap<Food, Integer>();
+        this.name = "Alien";
     }
     @Override
     void initVitals() {

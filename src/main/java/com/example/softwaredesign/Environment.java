@@ -64,14 +64,11 @@ class Environment{
 
     void setNextTimeOfDay() {
         switch (this.timeOfDay){
-            case MORNING:
-                this.timeOfDay = Time.AFTERNOON;
-                break;
-            case AFTERNOON:
+            case DAY:
                 this.timeOfDay = Time.NIGHT;
                 break;
             case NIGHT:
-                this.timeOfDay = Time.MORNING;
+                this.timeOfDay = Time.DAY;
                 break;
         }
     }

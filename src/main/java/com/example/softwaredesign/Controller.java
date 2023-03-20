@@ -55,13 +55,13 @@ public class Controller {
 
             switch (environmentselected){
                 case "Forest":
-                    main.engine.setEnvironment(new Environment("Forest", 4, Time.MORNING));
+                    main.engine.setEnvironment(new Environment("Forest", 4, Time.DAY));
                     break;
                 case "Antarctica":
-                    main.engine.setEnvironment(new Environment("Antarctica", 2, Time.MORNING));
+                    main.engine.setEnvironment(new Environment("Antarctica", 2, Time.DAY));
                     break;
                 case "Desert":
-                    main.engine.setEnvironment(new Environment("Desert", 10, Time.MORNING));
+                    main.engine.setEnvironment(new Environment("Desert", 10, Time.DAY));
                     break;
                 default:
                     System.err.println("Wrong value passed to start game. Please exit and restart game");
@@ -91,6 +91,7 @@ public class Controller {
             scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
+            main.initSchedulers();
 
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Please select an environment and a creature.");

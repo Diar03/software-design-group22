@@ -39,6 +39,10 @@ public class Main extends Application {
         });
     }
 
+    public void initSchedulers(){
+
+    }
+
 
     public void buyFood(Food item){
         switch (item){
