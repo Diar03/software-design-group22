@@ -268,7 +268,7 @@ class Alien extends Creature {
         initVitals();
         setHungry(false);
         setEnvironment(env);
-        setInventory(new HashMap<>());
+        setInventory(new HashMap<Food, Integer>());
         setName("Alien");
     }
     @Override
