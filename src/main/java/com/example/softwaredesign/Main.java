@@ -46,7 +46,7 @@ public class Main extends Application {
         Runnable VitalUpdater = new Runnable() {
             public void run() {
                 System.out.println("Vitals being updated");
-                engine.creature.update();
+                engine.getCreature().update();
                 controller.updateBars();
 
             }
@@ -68,32 +68,32 @@ public class Main extends Application {
     public void buyFood(Food item){
         switch (item){
             case SALAD:
-                if(engine.creature.coins < 20){
+                if(engine.getCreature().coins < 20){
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setContentText("Not enough coins to buy this item");
                     alert.showAndWait();
                     return;
                 }else{
-                    engine.creature.coins -= 20;
+                    engine.getCreature().coins -= 20;
                 }
                 break;
             case MEAT:
-                if(engine.creature.coins < 25){
+                if(engine.getCreature().coins < 25){
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setContentText("Not enough coins to buy this item");
                     alert.showAndWait();
                     return;
                 }else{
-                    engine.creature.coins -= 25;
+                    engine.getCreature().coins -= 25;
                 }
                 break;
         }
 
-        Integer currentVal = engine.creature.inventory.get(item);
+        Integer currentVal = engine.getCreature().inventory.get(item);
         if(currentVal == null){
-            engine.creature.inventory.put(item, 1);
+            engine.getCreature().inventory.put(item, 1);
         }else{
-            engine.creature.inventory.put(item, currentVal + 1);
+            engine.getCreature().inventory.put(item, currentVal + 1);
         }
 
     }

@@ -69,13 +69,13 @@ public class Controller {
 
             switch (creatureSelected){
                 case "Vampire":
-                    main.engine.setCreature(new Vampire(main.engine.environment));
+                    main.engine.setCreature(new Vampire(main.engine.getEnvironment()));
                     break;
                 case "Bird":
-                    main.engine.setCreature(new Bird(main.engine.environment));
+                    main.engine.setCreature(new Bird(main.engine.getEnvironment()));
                     break;
                 case "Alien":
-                    main.engine.setCreature(new Alien(main.engine.environment));
+                    main.engine.setCreature(new Alien(main.engine.getEnvironment()));
                     break;
                 default:
                     System.err.println("Wrong value passed to start game. Please exit and restart game");

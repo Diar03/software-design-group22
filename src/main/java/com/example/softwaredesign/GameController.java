@@ -59,7 +59,7 @@ public class GameController implements Initializable {
     }
 
     public void adaptScreenToCreature(){
-        switch (main.engine.creature.name){
+        switch (main.engine.getCreature().name){
             case "Bird":
                 flyButton = new Button("Fly");
                 flyButton.setLayoutX(14);
@@ -67,7 +67,7 @@ public class GameController implements Initializable {
                 flyButton.setPrefHeight(32.0);
                 flyButton.setPrefWidth(74.0);
                 flyButton.setOnAction(event -> {
-                    ((Bird)main.engine.creature).fly();
+                    ((Bird)main.engine.getCreature()).fly();
                 });
 
                 flightBar = new ProgressBar();
@@ -99,7 +99,7 @@ public class GameController implements Initializable {
                 shapeshiftButton.setPrefHeight(32.0);
                 shapeshiftButton.setPrefWidth(74.0);
                 shapeshiftButton.setOnAction(event -> {
-                    ((Alien)main.engine.creature).changeShape();
+                    ((Alien)main.engine.getCreature()).changeShape();
                 });
 
                 shapeshiftBar = new ProgressBar();
@@ -128,22 +128,22 @@ public class GameController implements Initializable {
     }
 
     public void updateBars(){
-        double curHealth = main.engine.creature.health.getPercentageLevel()/100.0;
-        double curHunger = main.engine.creature.hunger.getPercentageLevel()/100.0;
+        double curHealth = main.engine.getCreature().health.getPercentageLevel()/100.0;
+        double curHunger = main.engine.getCreature().hunger.getPercentageLevel()/100.0;
         healthBar.setProgress(curHealth);
         hungerBar.setProgress(curHunger);
-        switch (main.engine.creature.name){
+        switch (main.engine.getCreature().name){
 
             case "Alien":
-                double curShapeshift = ((Alien)main.engine.creature).shapeshift.getPercentageLevel()/100.0;
+                double curShapeshift = ((Alien)main.engine.getCreature()).shapeshift.getPercentageLevel()/100.0;
                 shapeshiftBar.setProgress(curShapeshift);
                 break;
             case "Bird":
-                double curFlight = ((Bird)main.engine.creature).flight.getPercentageLevel()/100.0;
+                double curFlight = ((Bird)main.engine.getCreature()).flight.getPercentageLevel()/100.0;
                 flightBar.setProgress(curFlight);
                 break;
             case "Vampire":
-                double curPhotosensitivity = ((Vampire)main.engine.creature).photosensitivity.getPercentageLevel()/100.0;
+                double curPhotosensitivity = ((Vampire)main.engine.getCreature()).photosensitivity.getPercentageLevel()/100.0;
                 photosensitivityBar.setProgress(curPhotosensitivity);
                 break;
         }
@@ -161,11 +161,11 @@ public class GameController implements Initializable {
             alert.showAndWait();
             return;
         }
-        main.engine.creature.eat(choice);
+        main.engine.getCreature().eat(choice);
         updateBars();
     }
     public void updateTime(){
-        Environment curEnv = main.engine.environment;
+        Environment curEnv = main.engine.getEnvironment();
         if(curEnv.getTimeOfDay().equals(Time.DAY)){
             environmentView.setImage(curEnv.getDaySprite());
         }else{
