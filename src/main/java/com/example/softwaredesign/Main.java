@@ -13,7 +13,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class Main extends Application {
-    Parent root;
+    private Parent root;
     public Scene scene;
     public Engine engine;
 
@@ -75,7 +75,6 @@ public class Main extends Application {
                     return;
                 }else{
                     engine.getCreature().deccreaseCoins(20);
-//                    engine.getCreature().coins -= 20;
                 }
                 break;
             case MEAT:
@@ -86,7 +85,6 @@ public class Main extends Application {
                     return;
                 }else{
                     engine.getCreature().deccreaseCoins(25);
-//                    engine.getCreature().coins -= 25;
                 }
                 break;
         }
