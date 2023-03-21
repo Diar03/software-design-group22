@@ -6,19 +6,83 @@ import javafx.scene.image.Image;
 import java.util.HashMap;
 import java.util.Map;
 
-abstract class Creature {
-     int coins = 50;
-     Image sprite;
-     Boolean isHungry;
+public abstract class Creature {
+     private int coins = 50;
+     private Image sprite;
+     private Boolean isHungry;
 
-     String name;
+     private String name;
 
-     Environment environment;
+     private Environment environment;
 
-     Vital hunger;
-     Vital health;
+     private Vital hunger;
+     private Vital health;
      //Set<Vital> vitals;
-     Map<Food, Integer> inventory;
+     private Map<Food, Integer> inventory;
+
+    public int getCoins() {
+        return this.coins;
+    }
+
+    public void setCoins(int coins) {
+        this.coins = coins;
+    }
+
+    public Image getSprite() {
+        return sprite;
+    }
+
+    public void setSprite(Image sprite) {
+        this.sprite = sprite;
+    }
+
+    public Boolean getHungry() {
+        return isHungry;
+    }
+
+    public void setHungry(Boolean hungry) {
+        isHungry = hungry;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Environment getEnvironment() {
+        return environment;
+    }
+
+    public void setEnvironment(Environment environment) {
+        this.environment = environment;
+    }
+
+    public Vital getHunger() {
+        return hunger;
+    }
+
+    public void setHunger(Vital hunger) {
+        this.hunger = hunger;
+    }
+
+    public Vital getHealth() {
+        return health;
+    }
+
+    public void setHealth(Vital health) {
+        this.health = health;
+    }
+
+    public Map<Food, Integer> getInventory() {
+        return inventory;
+    }
+
+    public void setInventory(Map<Food, Integer> inventory) {
+        this.inventory = inventory;
+    }
 
     static void playMiniGame() {}
     static void sleep() {}
@@ -43,7 +107,7 @@ abstract class Creature {
             return true;
         }
     }
-    static void increaseCoins(int value) {}
+
     public void eat(Food food){
 
         if(!inventory.containsKey(food)){
@@ -80,60 +144,95 @@ abstract class Creature {
 
         inventory.put(food, inventory.get(food) - 1);
     }
+    void increaseCoins(int value) {
+        int currVal = getCoins();
+        setCoins(currVal + value);
+    }
+    void deccreaseCoins(int value) {
+        int currVal = getCoins();
+        setCoins(currVal - value);
+    }
+
 }
 
 class Bird extends Creature {
 
-    Vital flight;
+    private Vital flight;
 
     public Bird(Environment env){
-        this.sprite = new Image(getClass().getResourceAsStream("tweetyIdle.png"));
+        setSprite(new Image(getClass().getResourceAsStream("tweetyIdle.png")));
         this.initVitals();
-        this.isHungry = false;
-        this.environment = env;
-        this.inventory = new HashMap<Food, Integer>();
-        this.name = "Bird";
+        setHungry(false);
+        setEnvironment(env);
+        setInventory( new HashMap<Food, Integer>());
+        setName("Bird");
     }
+
+    public Vital getFlight() {
+        return flight;
+    }
+
+    public void setFlight(Vital flight) {
+        this.flight = flight;
+    }
+
     @Override
     void initVitals() {
-        flight = new Vital(50, "Flight");
-        hunger = new Vital(50, "Hunger");
-        health = new Vital(50, "Health");
+        setFlight(new Vital(50, "Flight"));
+        setHunger(new Vital(50, "Hunger"));
+        setHealth(new Vital(50, "Health"));
     }
 
     public void fly(){}
 }
 
 class Vampire extends Creature {
-    Boolean isBurning;
-    Vital photosensitivity;
+    private Boolean isBurning;
+    private Vital photosensitivity;
+
     public Vampire(Environment env){
-        this.sprite = new Image(getClass().getResourceAsStream("vampireIdle.png"));
+        setSprite(new Image(getClass().getResourceAsStream("vampireIdle.png")));
         initVitals();
-        this.isHungry = false;
-        this.isBurning = false;
-        this.environment = env;
-        this.inventory = new HashMap<Food, Integer>();
-        this.name = "Vampire";
+        setHungry(false);
+        setBurning(false);
+        setEnvironment(env);
+        setInventory(new HashMap<Food, Integer>());
+        setName("Vampire");
     }
+
+    public Boolean getBurning() {
+        return isBurning;
+    }
+
+    public void setBurning(Boolean burning) {
+        isBurning = burning;
+    }
+
+    public Vital getPhotosensitivity() {
+        return photosensitivity;
+    }
+
+    public void setPhotosensitivity(Vital photosensitivity) {
+        this.photosensitivity = photosensitivity;
+    }
+
     @Override
     void initVitals() {
-        photosensitivity = new Vital(50, "Photosensitivity");
-        hunger = new Vital(50, "Hunger");
-        health = new Vital(50, "Health");
-
+        setPhotosensitivity(new Vital(50, "Photosensitivity"));
+        setHunger(new Vital(50, "Hunger"));
+        setHealth(new Vital(50, "Health"));
     }
 
     @Override
     public boolean update() {
 
-        if(environment.getTimeOfDay() == Time.DAY){
-            int currentIntensity = environment.getSunlightIntensity();
+        if(getEnvironment().getTimeOfDay() == Time.DAY){
+            int currentIntensity = getEnvironment().getSunlightIntensity();
             photosensitivity.decreaseVital(currentIntensity);
         }
 
-        if(hunger.getPercentageLevel() < 20){
-            isHungry = true;
+        if(getHunger().getPercentageLevel() < 20){
+            setHungry(true);
         }
 
 
@@ -142,18 +241,18 @@ class Vampire extends Creature {
         }
 
 
-        if(isHungry){
-            hunger.decreaseVital(2);
-            health.decreaseVital(2);
+        if(getHungry()){
+            getHunger().decreaseVital(2);
+            getHealth().decreaseVital(2);
         }else{
-            hunger.decreaseVital(3);
+            getHunger().decreaseVital(3);
         }
 
-        if(isBurning){
-            health.decreaseVital(5);
+        if(getBurning()){
+            getHealth().decreaseVital(5);
         }
 
-        if(health.getPercentageLevel() <= 0){
+        if(getHealth().getPercentageLevel() <= 0){
             return false;
         }else{
             return true;
@@ -163,20 +262,28 @@ class Vampire extends Creature {
 }
 
 class Alien extends Creature {
-    Vital shapeshift;
+    private Vital shapeshift;
     public Alien(Environment env){
-        this.sprite = new Image(getClass().getResourceAsStream("alienIdle.png"));
+        setSprite(new Image(getClass().getResourceAsStream("alienIdle.png")));
         initVitals();
-        this.isHungry = false;
-        this.environment = env;
-        this.inventory = new HashMap<>();
-        this.name = "Alien";
+        setHungry(false);
+        setEnvironment(env);
+        setInventory(new HashMap<>());
+        setName("Alien");
     }
     @Override
     void initVitals() {
-        shapeshift = new Vital(50, "Shapeshift");
-        hunger = new Vital(50, "Hunger");
-        health = new Vital(50, "Health");
+        setShapeshift(new Vital(50, "Shapeshift"));
+        setHunger(new Vital(50, "Hunger"));
+        setHealth(new Vital(50, "Health"));
+    }
+
+    public Vital getShapeshift() {
+        return shapeshift;
+    }
+
+    public void setShapeshift(Vital shapeshift) {
+        this.shapeshift = shapeshift;
     }
 
     public void changeShape() {}

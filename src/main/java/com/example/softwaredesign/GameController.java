@@ -59,7 +59,7 @@ public class GameController implements Initializable {
     }
 
     public void adaptScreenToCreature(){
-        switch (main.engine.getCreature().name){
+        switch (main.engine.getCreature().getName()){
             case "Bird":
                 flyButton = new Button("Fly");
                 flyButton.setLayoutX(14);
@@ -128,22 +128,22 @@ public class GameController implements Initializable {
     }
 
     public void updateBars(){
-        double curHealth = main.engine.getCreature().health.getPercentageLevel()/100.0;
-        double curHunger = main.engine.getCreature().hunger.getPercentageLevel()/100.0;
+        double curHealth = main.engine.getCreature().getHealth().getPercentageLevel()/100.0;
+        double curHunger = main.engine.getCreature().getHunger().getPercentageLevel()/100.0;
         healthBar.setProgress(curHealth);
         hungerBar.setProgress(curHunger);
-        switch (main.engine.getCreature().name){
+        switch (main.engine.getCreature().getName()){
 
             case "Alien":
-                double curShapeshift = ((Alien)main.engine.getCreature()).shapeshift.getPercentageLevel()/100.0;
+                double curShapeshift = ((Alien)main.engine.getCreature()).getShapeshift().getPercentageLevel()/100.0;
                 shapeshiftBar.setProgress(curShapeshift);
                 break;
             case "Bird":
-                double curFlight = ((Bird)main.engine.getCreature()).flight.getPercentageLevel()/100.0;
+                double curFlight = ((Bird)main.engine.getCreature()).getFlight().getPercentageLevel()/100.0;
                 flightBar.setProgress(curFlight);
                 break;
             case "Vampire":
-                double curPhotosensitivity = ((Vampire)main.engine.getCreature()).photosensitivity.getPercentageLevel()/100.0;
+                double curPhotosensitivity = ((Vampire)main.engine.getCreature()).getPhotosensitivity().getPercentageLevel()/100.0;
                 photosensitivityBar.setProgress(curPhotosensitivity);
                 break;
         }
@@ -151,7 +151,7 @@ public class GameController implements Initializable {
 
     public void loadImages(){
         environmentView.setImage(main.engine.getEnvironment().getDaySprite());
-        creatureView.setImage(main.engine.getCreature().sprite);
+        creatureView.setImage(main.engine.getCreature().getSprite());
     }
     public void eatButton(){
         Food choice = eatChoiceBox.getValue();

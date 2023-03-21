@@ -68,32 +68,34 @@ public class Main extends Application {
     public void buyFood(Food item){
         switch (item){
             case SALAD:
-                if(engine.getCreature().coins < 20){
+                if(engine.getCreature().getCoins() < 20){
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setContentText("Not enough coins to buy this item");
                     alert.showAndWait();
                     return;
                 }else{
-                    engine.getCreature().coins -= 20;
+                    engine.getCreature().deccreaseCoins(20);
+//                    engine.getCreature().coins -= 20;
                 }
                 break;
             case MEAT:
-                if(engine.getCreature().coins < 25){
+                if(engine.getCreature().getCoins() < 25){
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setContentText("Not enough coins to buy this item");
                     alert.showAndWait();
                     return;
                 }else{
-                    engine.getCreature().coins -= 25;
+                    engine.getCreature().deccreaseCoins(25);
+//                    engine.getCreature().coins -= 25;
                 }
                 break;
         }
 
-        Integer currentVal = engine.getCreature().inventory.get(item);
+        Integer currentVal = engine.getCreature().getInventory().get(item);
         if(currentVal == null){
-            engine.getCreature().inventory.put(item, 1);
+            engine.getCreature().getInventory().put(item, 1);
         }else{
-            engine.getCreature().inventory.put(item, currentVal + 1);
+            engine.getCreature().getInventory().put(item, currentVal + 1);
         }
 
     }
