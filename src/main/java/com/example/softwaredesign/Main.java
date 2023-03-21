@@ -14,9 +14,16 @@ import java.util.concurrent.TimeUnit;
 
 public class Main extends Application {
     private Parent root;
-    public Scene scene;
-    public Engine engine;
+    private Scene scene;
+    private Engine engine;
 
+    public Engine getEngine() {
+        return engine;
+    }
+
+    public void setEngine(Engine engine) {
+        this.engine = engine;
+    }
 
     @Override
     public void start(Stage stage) throws IOException, InterruptedException {

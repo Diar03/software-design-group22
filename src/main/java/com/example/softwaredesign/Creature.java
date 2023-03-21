@@ -20,6 +20,28 @@ public abstract class Creature {
      //Set<Vital> vitals;
      private Map<Food, Integer> inventory;
 
+     private static Creature instance = null;
+     Creature(){};
+     public static Creature getInstance(String chosenCreature,Environment env){
+         if (instance == null){
+             switch (chosenCreature){
+                 case "Bird":
+                     instance = new Bird(env);
+                     break;
+                 case "Vampire":
+                     instance = new Vampire(env);
+                     break;
+                 case "Alien":
+                     instance = new Alien(env);
+                     break;
+                 default:
+                     System.err.println("Invalid creature!!");
+                     break;
+             }
+         }
+         return instance;
+     }
+
     public int getCoins() {
         return this.coins;
     }
@@ -160,6 +182,7 @@ class Bird extends Creature {
     private Vital flight;
 
     public Bird(Environment env){
+        super();
         setSprite(new Image(getClass().getResourceAsStream("tweetyIdle.png")));
         this.initVitals();
         setHungry(false);

@@ -10,8 +10,8 @@ class Environment{
     private Image nightSprite;
     private int sunlightIntensity;
     private Time timeOfDay;
-
-    public Environment(String name, int sunlightIntensity, Time timeOfDay) {
+    private static Environment instance = null;
+    private Environment(String name, int sunlightIntensity, Time timeOfDay) {
         this.name = name;
         switch (name){
             case "Forest":
@@ -33,7 +33,12 @@ class Environment{
         this.sunlightIntensity = sunlightIntensity;
         this.timeOfDay = timeOfDay;
     }
-
+    public static Environment getInstance(String name, int sunlightIntensity, Time timeOfDay){
+        if (instance == null){
+            instance = new Environment(name,sunlightIntensity, timeOfDay);
+        }
+        return instance;
+    }
     public String getName() {
         return name;
     }

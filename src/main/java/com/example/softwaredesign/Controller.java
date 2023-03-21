@@ -26,19 +26,19 @@ public class Controller {
     @FXML
     private RadioButton forestButton, antarcticaButton, desertButton, vampireButton, birdButton, alienButton;
 
-    private String environmentselected;
+    private String environmentSelected;
     private String creatureSelected;
 
     private Main main;
 
     public void forestChosen(ActionEvent e){
-        environmentselected = "Forest";
+        environmentSelected = "Forest";
     }
 
-    public void antarcticaChosen(ActionEvent e){ environmentselected = "Antarctica"; }
+    public void antarcticaChosen(ActionEvent e){ environmentSelected = "Antarctica"; }
 
     public void desertChosen(ActionEvent e){
-        environmentselected = "Desert";
+        environmentSelected = "Desert";
     }
     public void birdChosen(ActionEvent e){
         creatureSelected = "Bird";
@@ -51,35 +51,22 @@ public class Controller {
     }
 
     public void startTheGame(ActionEvent e) throws IOException {
-        if (environmentselected != null && creatureSelected != null) {
-
-            switch (environmentselected){
+        if (environmentSelected != null && creatureSelected != null) {
+            switch (environmentSelected){
                 case "Forest":
-                    main.engine.setEnvironment(new Environment("Forest", 4, Time.DAY));
+                    main.getEngine().setEnvironment(Environment.getInstance(environmentSelected, 4, Time.DAY));
                     break;
                 case "Antarctica":
-                    main.engine.setEnvironment(new Environment("Antarctica", 2, Time.DAY));
+                    main.getEngine().setEnvironment(Environment.getInstance(environmentSelected, 2, Time.DAY));
                     break;
                 case "Desert":
-                    main.engine.setEnvironment(new Environment("Desert", 10, Time.DAY));
+                    main.getEngine().setEnvironment(Environment.getInstance(environmentSelected, 10, Time.DAY));
                     break;
                 default:
                     System.err.println("Wrong value passed to start game. Please exit and restart game");
             }
 
-            switch (creatureSelected){
-                case "Vampire":
-                    main.engine.setCreature(new Vampire(main.engine.getEnvironment()));
-                    break;
-                case "Bird":
-                    main.engine.setCreature(new Bird(main.engine.getEnvironment()));
-                    break;
-                case "Alien":
-                    main.engine.setCreature(new Alien(main.engine.getEnvironment()));
-                    break;
-                default:
-                    System.err.println("Wrong value passed to start game. Please exit and restart game");
-            }
+            main.getEngine().setCreature(Creature.getInstance(creatureSelected,main.getEngine().getEnvironment()));
 
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("gameScreen.fxml"));
             root = loader.load();
@@ -103,6 +90,5 @@ public class Controller {
     public void setMain(Main theMainInstance){
         this.main = theMainInstance;
     }
-
 
 }
