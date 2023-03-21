@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class Creature {
-     private int coins = 55;
+     private int coins = 50;
      private Image sprite;
      private Boolean isHungry;
 
