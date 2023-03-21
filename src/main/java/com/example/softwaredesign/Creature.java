@@ -127,7 +127,7 @@ class Vampire extends Creature {
     @Override
     public boolean update() {
 
-        if(environment.timeOfDay == Time.DAY){
+        if(environment.getTimeOfDay() == Time.DAY){
             int currentIntensity = environment.getSunlightIntensity();
             photosensitivity.decreaseVital(currentIntensity);
         }

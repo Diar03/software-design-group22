@@ -150,7 +150,7 @@ public class GameController implements Initializable {
     }
 
     public void loadImages(){
-        environmentView.setImage(main.engine.getEnvironment().daySprite);
+        environmentView.setImage(main.engine.getEnvironment().getDaySprite());
         creatureView.setImage(main.engine.getCreature().sprite);
     }
     public void eatButton(){
@@ -167,9 +167,9 @@ public class GameController implements Initializable {
     public void updateTime(){
         Environment curEnv = main.engine.environment;
         if(curEnv.getTimeOfDay().equals(Time.DAY)){
-            environmentView.setImage(curEnv.daySprite);
+            environmentView.setImage(curEnv.getDaySprite());
         }else{
-            environmentView.setImage(curEnv.nightSprite);
+            environmentView.setImage(curEnv.getNightSprite());
         }
     }
 

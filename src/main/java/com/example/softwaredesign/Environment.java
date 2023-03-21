@@ -4,12 +4,12 @@ import com.example.softwaredesign.Time;
 import javafx.scene.image.Image;
 
 class Environment{
-    String name;
+    private String name;
 
-    Image daySprite;
-    Image nightSprite;
-    int sunlightIntensity;
-    Time timeOfDay;
+    private Image daySprite;
+    private Image nightSprite;
+    private int sunlightIntensity;
+    private Time timeOfDay;
 
     public Environment(String name, int sunlightIntensity, Time timeOfDay) {
         this.name = name;
@@ -42,13 +42,6 @@ class Environment{
         this.name = name;
     }
 
-    /*public Boolean getRaining() {
-        return isRaining;
-    }
-
-    public void setRaining(Boolean raining) {
-        isRaining = raining;
-    }*/
 
     public int getSunlightIntensity() {
         return sunlightIntensity;
@@ -75,5 +68,21 @@ class Environment{
                 this.timeOfDay = Time.DAY;
                 break;
         }
+    }
+
+    public Image getDaySprite() {
+        return daySprite;
+    }
+
+    public void setDaySprite(Image daySprite) {
+        this.daySprite = daySprite;
+    }
+
+    public Image getNightSprite() {
+        return nightSprite;
+    }
+
+    public void setNightSprite(Image nightSprite) {
+        this.nightSprite = nightSprite;
     }
 }
