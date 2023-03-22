@@ -174,6 +174,13 @@ public class GameController implements Initializable {
     }
 
     public void sleep(){
+        if (main.getEngine().getCreature().sleep()) {
+            updateBars();
+            updateTime();
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setContentText("The " + main.getEngine().getCreature().getName() + " slept, the vitals have been increased");
+            alert.showAndWait();
+        }
         System.out.println("Sleeping");
     }
     public void setMain(Main theMainInstance){

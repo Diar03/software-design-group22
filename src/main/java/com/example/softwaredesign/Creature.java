@@ -107,7 +107,8 @@ public abstract class Creature {
     }
 
     static void playMiniGame() {}
-    static void sleep() {}
+
+    abstract boolean sleep();
     abstract void initVitals();
 
     public boolean update(){
@@ -206,6 +207,35 @@ class Bird extends Creature {
         setHealth(new Vital(50, "Health"));
     }
 
+    @Override
+    boolean sleep() {
+        if(getEnvironment().getTimeOfDay() == Time.NIGHT) {
+            if((flight.getPercentageLevel() + 20) > 100){
+                flight.increaseVital(100 - flight.getPercentageLevel());
+            }else{
+                flight.increaseVital(20);
+            }
+            if((getHunger().getPercentageLevel() + 20) > 100){
+                getHunger().increaseVital(100 - getHunger().getPercentageLevel());
+            }else{
+                getHunger().increaseVital(20);
+            }
+            if((getHealth().getPercentageLevel() + 20) > 100){
+                getHealth().increaseVital(100 - getHealth().getPercentageLevel());
+            }else{
+                getHealth().increaseVital(20);
+            }
+            getEnvironment().setNextTimeOfDay();
+            return true;
+        }
+        else {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setContentText("You cannot sleep during the Day");
+            alert.showAndWait();
+            return false;
+        }
+    }
+
     public void fly(){}
 }
 
@@ -244,6 +274,35 @@ class Vampire extends Creature {
         setPhotosensitivity(new Vital(50, "Photosensitivity"));
         setHunger(new Vital(50, "Hunger"));
         setHealth(new Vital(50, "Health"));
+    }
+
+    @Override
+    boolean sleep() {
+        if(getEnvironment().getTimeOfDay() == Time.DAY) {
+            if((photosensitivity.getPercentageLevel() + 20) > 100){
+                photosensitivity.increaseVital(100 - photosensitivity.getPercentageLevel());
+            }else{
+                photosensitivity.increaseVital(20);
+            }
+            if((getHunger().getPercentageLevel() + 20) > 100){
+                getHunger().increaseVital(100 - getHunger().getPercentageLevel());
+            }else{
+                getHunger().increaseVital(20);
+            }
+            if((getHealth().getPercentageLevel() + 20) > 100){
+                getHealth().increaseVital(100 - getHealth().getPercentageLevel());
+            }else{
+                getHealth().increaseVital(20);
+            }
+            getEnvironment().setNextTimeOfDay();
+            return true;
+        }
+        else {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setContentText("You cannot sleep during the Night");
+            alert.showAndWait();
+            return false;
+        }
     }
 
     @Override
@@ -299,6 +358,35 @@ class Alien extends Creature {
         setShapeshift(new Vital(50, "Shapeshift"));
         setHunger(new Vital(50, "Hunger"));
         setHealth(new Vital(50, "Health"));
+    }
+
+    @Override
+    boolean sleep() {
+        if(getEnvironment().getTimeOfDay() == Time.NIGHT) {
+            if((shapeshift.getPercentageLevel() + 20) > 100){
+                shapeshift.increaseVital(100 - shapeshift.getPercentageLevel());
+            }else{
+                shapeshift.increaseVital(20);
+            }
+            if((getHunger().getPercentageLevel() + 20) > 100){
+                getHunger().increaseVital(100 - getHunger().getPercentageLevel());
+            }else{
+                getHunger().increaseVital(20);
+            }
+            if((getHealth().getPercentageLevel() + 20) > 100){
+                getHealth().increaseVital(100 - getHealth().getPercentageLevel());
+            }else{
+                getHealth().increaseVital(20);
+            }
+            getEnvironment().setNextTimeOfDay();
+            return true;
+        }
+        else {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setContentText("You cannot sleep during the Day");
+            alert.showAndWait();
+            return false;
+        }
     }
 
     public Vital getShapeshift() {
