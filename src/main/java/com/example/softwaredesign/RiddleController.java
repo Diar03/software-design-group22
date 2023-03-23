@@ -2,6 +2,7 @@ package com.example.softwaredesign;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -12,8 +13,13 @@ import javafx.scene.control.RadioButton;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class RiddleController {
-    int num;
+public class RiddleController implements Initializable {
+    @Override
+    public void initialize(URL arg0, ResourceBundle arg1){
+        System.out.println("RIDDLEE");
+    }
 }
 

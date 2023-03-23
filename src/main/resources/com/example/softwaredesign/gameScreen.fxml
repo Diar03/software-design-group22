@@ -18,5 +18,6 @@
       <ChoiceBox fx:id="eatChoiceBox" layoutX="532.0" layoutY="438.0" prefHeight="25.0" prefWidth="84.0" />
       <ProgressBar fx:id="hungerBar" layoutX="468.0" layoutY="15.0" prefHeight="25.0" prefWidth="158.0" progress="0.5" />
       <ProgressBar fx:id="healthBar" layoutX="468.0" layoutY="45.0" prefHeight="25.0" prefWidth="158.0" progress="0.5" />
+      <ComboBox fx:id="games" layoutX="9.0" layoutY="187.0" prefHeight="26.0" prefWidth="84.0" promptText="Games" />
    </children>
 </AnchorPane>

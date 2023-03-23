@@ -1,21 +1,33 @@
 package com.example.softwaredesign;
 
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class GameController implements Initializable {
-    private Main main;
+import javafx.scene.Node;
 
+public class GameController implements Initializable {
+    private Stage stage;
+    private Scene scene;
+    private Parent root;
+    private Main main;
+    @FXML
+    private ComboBox<String> games;
+
+    private String[] gamesArray = {"Riddle"};
     @FXML
     private ImageView environmentView;
 
@@ -52,11 +64,29 @@ public class GameController implements Initializable {
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1){
+        games.getItems().addAll(gamesArray);
+        games.setOnAction(onItemSelected);
         shop.getItems().addAll(shopItems);
         eatChoiceBox.getItems().addAll(shopItems);
         hungerBar.setStyle("-fx-accent: #c4591b;");
         healthBar.setStyle("-fx-accent: red;");
     }
+    EventHandler<ActionEvent> onItemSelected = event -> {
+        System.out.println("Hello");
+        try {
+            //CONTINUE HERE
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("riddleGameScreen.fxml"));
+            root = loader.load();
+            RiddleController riddleController = loader.getController();
+            scene = new Scene(root);
+            stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+        } catch(IOException e){
+            //throws IOException;
+        }
+
+    };
 
     public void adaptScreenToCreature(){
         switch (main.getEngine().getCreature().getName()){
@@ -133,7 +163,6 @@ public class GameController implements Initializable {
         healthBar.setProgress(curHealth);
         hungerBar.setProgress(curHunger);
         switch (main.getEngine().getCreature().getName()){
-
             case "Alien":
                 double curShapeshift = ((Alien)main.getEngine().getCreature()).getShapeshift().getPercentageLevel()/100.0;
                 shapeshiftBar.setProgress(curShapeshift);
