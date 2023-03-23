@@ -7,6 +7,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -41,9 +42,10 @@ public class RiddleController implements Initializable {
             }
             currentQuestion.setText(riddle.getQuestions()[iterator]);
         }else{
-            System.out.println("GAME OVER");
             main.getEngine().getCreature().increaseCoins(riddle.getEarnedMoney());
-            System.out.println(main.getEngine().getCreature().getCoins());
+            main.getEngine().getCreature().getHealth().increaseVital(10);
+            main.getEngine().getCreature().getHunger().decreaseVital(5);
+
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("gameScreen.fxml"));
             root = loader.load();
             GameController controller = loader.getController();
