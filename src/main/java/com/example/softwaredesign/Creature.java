@@ -150,18 +150,10 @@ public abstract class Creature {
 
         switch (food){
             case MEAT:
-                if((hunger.getPercentageLevel() + 20) > 100){
-                    hunger.increaseVital(100 - hunger.getPercentageLevel());
-                }else{
-                    hunger.increaseVital(20);
-                }
+                hunger.increaseVital(20);
                 break;
             case SALAD:
-                if((hunger.getPercentageLevel() + 25) > 100){
-                    hunger.increaseVital(100 - hunger.getPercentageLevel());
-                }else{
-                    hunger.increaseVital(25);
-                }
+                hunger.increaseVital(25);
                 break;
         }
 
@@ -219,7 +211,7 @@ class Bird extends Creature {
     }
 
     @Override
-    boolean sleep() {
+    public boolean sleep() {
         if(getEnvironment().getTimeOfDay() == Time.NIGHT) {
             if((flight.getPercentageLevel() + 20) > 100){
                 flight.increaseVital(100 - flight.getPercentageLevel());
@@ -247,7 +239,17 @@ class Bird extends Creature {
         }
     }
 
-    public void fly(){}
+    public boolean fly(){
+        if(this.getFlight().getPercentageLevel() <= 0){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setContentText("You do not have any flight left...");
+            alert.showAndWait();
+            return false;
+        }else{
+            return true;
+        }
+
+    }
 }
 
 class Vampire extends Creature {

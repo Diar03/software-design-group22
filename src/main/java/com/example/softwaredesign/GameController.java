@@ -98,9 +98,7 @@ public class GameController implements Initializable {
                 flyButton.setLayoutY(394);
                 flyButton.setPrefHeight(32.0);
                 flyButton.setPrefWidth(74.0);
-                flyButton.setOnAction(event -> {
-                    ((Bird)main.getEngine().getCreature()).fly();
-                });
+                flyButton.setOnAction(this::fly);
 
                 flightBar = new ProgressBar();
                 flightBar.setLayoutX(468.0);
@@ -111,7 +109,6 @@ public class GameController implements Initializable {
                 flightBar.setProgress(0.5);
 
                 pane.getChildren().add(flyButton);
-                flyButton.setOnAction(this::fly);
                 pane.getChildren().add(flightBar);
                 break;
             case "Vampire":
@@ -238,7 +235,14 @@ public class GameController implements Initializable {
 
     public void fly(ActionEvent event) {
         creatureView.setImage(((Bird)main.getEngine().getCreature()).getFlyingSprite());
-        System.out.println("FLY");
+        creatureView.setLayoutY(160);
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        creatureView.setLayoutY(260);
+        creatureView.setImage(main.getEngine().getCreature().getSprite());
     }
 
     public void setMain(Main theMainInstance){

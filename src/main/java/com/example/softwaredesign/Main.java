@@ -48,7 +48,6 @@ public class Main extends Application {
         stage.show();
         stage.setOnCloseRequest(event -> {
             event.consume();
-            executor.shutdown();
             exitGame(stage);
         });
     }
@@ -64,8 +63,8 @@ public class Main extends Application {
             engine.getEnvironment().setNextTimeOfDay();
             controller.updateTime();
         };
-        executor.scheduleAtFixedRate(vitalUpdater, 5, 1, TimeUnit.SECONDS);
-        executor.scheduleAtFixedRate(timeUpdater, 20, 30, TimeUnit.SECONDS);
+        executor.scheduleAtFixedRate(vitalUpdater, 10, 10, TimeUnit.SECONDS);
+        executor.scheduleAtFixedRate(timeUpdater, 50, 50, TimeUnit.SECONDS);
     }
 
 
@@ -109,6 +108,7 @@ public class Main extends Application {
         alert.setHeaderText("*ALERT* Quitting Vivarium game");
         alert.setContentText("Are you sure you want to quit “Vivarium” game??? ");
         if(alert.showAndWait().get() == ButtonType.OK){
+            executor.shutdown();
             stage.close();
         }
     }
