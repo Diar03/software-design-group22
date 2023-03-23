@@ -8,13 +8,13 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.softwaredesign.RiddleController">
    <children>
-      <TextField fx:id="currentAnswer" layoutX="209.0" layoutY="168.0" />
-      <Label layoutX="209.0" layoutY="46.0" prefHeight="67.0" prefWidth="168.0" text="Riddle Game">
+      <TextField fx:id="currentAnswer" layoutX="191.0" layoutY="188.0" prefHeight="42.0" prefWidth="217.0" />
+      <Label layoutX="216.0" layoutY="44.0" prefHeight="67.0" prefWidth="168.0" text="Riddle Game">
          <font>
             <Font size="28.0" />
          </font>
       </Label>
-      <Label fx:id="currentQuestion" layoutX="232.0" layoutY="129.0" text="Question goes here" />
-      <Button layoutX="248.0" layoutY="233.0" mnemonicParsing="false" onAction="#submit" text="Submit" />
+      <Label fx:id="currentQuestion" layoutX="241.0" layoutY="138.0" text="Question goes here" />
+      <Button alignment="CENTER" layoutX="247.0" layoutY="266.0" mnemonicParsing="false" onAction="#submit" prefHeight="52.0" prefWidth="92.0" text="Submit" textAlignment="CENTER" underline="true" />
    </children>
 </AnchorPane>
