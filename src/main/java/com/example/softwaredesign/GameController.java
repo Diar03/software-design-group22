@@ -12,6 +12,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import org.controlsfx.control.action.Action;
 
 import java.io.IOException;
 import java.net.URL;
@@ -109,6 +110,7 @@ public class GameController implements Initializable {
                 flightBar.setProgress(0.5);
 
                 pane.getChildren().add(flyButton);
+                flyButton.setOnAction(this::fly);
                 pane.getChildren().add(flightBar);
                 break;
             case "Vampire":
@@ -140,6 +142,7 @@ public class GameController implements Initializable {
                 shapeshiftBar.setStyle("-fx-accent: green;");
                 shapeshiftBar.setProgress(0.5);
                 pane.getChildren().add(shapeshiftButton);
+                shapeshiftButton.setOnAction(this::shapeshift);
                 pane.getChildren().add(shapeshiftBar);
                 break;
         }
@@ -212,6 +215,31 @@ public class GameController implements Initializable {
         }
         System.out.println("Sleeping");
     }
+
+    public void shapeshift(ActionEvent event) {
+        if (((Alien)main.getEngine().getCreature()).changeShape()) {
+            if (creatureView.getImage().equals(((Alien)main.getEngine().getCreature()).getShapeshiftSprite())) {
+                creatureView.setImage(((Alien)main.getEngine().getCreature()).getSprite());
+            }
+            else {
+                creatureView.setImage(((Alien)main.getEngine().getCreature()).getShapeshiftSprite());
+            }
+            updateBars();
+            // creatureView.setImage(((Alien)main.getEngine().getCreature()).getShapeshiftSprite());
+            System.out.println("SHAPESHIFT");
+        }
+        else {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setContentText("The " + main.getEngine().getCreature().getName() + " cannot shapeshift anymore");
+            alert.showAndWait();
+        }
+    }
+
+    public void fly(ActionEvent event) {
+        creatureView.setImage(((Bird)main.getEngine().getCreature()).getFlyingSprite());
+        System.out.println("FLY");
+    }
+
     public void setMain(Main theMainInstance){
         this.main = theMainInstance;
     }
