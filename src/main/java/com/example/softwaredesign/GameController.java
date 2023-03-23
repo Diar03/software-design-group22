@@ -74,10 +74,10 @@ public class GameController implements Initializable {
     EventHandler<ActionEvent> onItemSelected = event -> {
         System.out.println("Hello");
         try {
-            //CONTINUE HERE
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("riddleGameScreen.fxml"));
             root = loader.load();
             RiddleController riddleController = loader.getController();
+
             scene = new Scene(root);
             stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
             stage.setScene(scene);

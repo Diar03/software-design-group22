@@ -6,10 +6,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -17,9 +14,41 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class RiddleController implements Initializable {
+    private Parent root;
+    private Scene scene;
+    private Stage stage;
+    private int iterator = 0;
+    @FXML
+    private Label currentQuestion;
+    @FXML
+    private TextField currentAnswer;
+
+    private Riddle riddle = new Riddle("Riddle");
     @Override
     public void initialize(URL arg0, ResourceBundle arg1){
+        currentQuestion.setText(riddle.getQuestions()[iterator]);
         System.out.println("RIDDLEE");
+    }
+    public void submit(ActionEvent event) throws IOException {
+        if(currentAnswer.getText().equals(riddle.getAnswers()[iterator])){
+            riddle.increaseEarnedMoney();
+            System.out.println(riddle.getEarnedMoney());
+            System.out.println("ONTO THE NEXT QUESTION");
+            iterator++;
+            if(iterator == 5){
+                System.out.println("Game is done");
+            }
+            currentQuestion.setText(riddle.getQuestions()[iterator]);
+        }else{
+            System.out.println("GAME OVER");
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("gameScreen.fxml"));
+            root = loader.load();
+            GameController controller = loader.getController();
+            scene = new Scene(root);
+            stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+        }
     }
 }
 
