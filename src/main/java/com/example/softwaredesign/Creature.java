@@ -20,7 +20,6 @@ public abstract class Creature {
      private Map<Food, Integer> inventory;
 
      private static Creature instance = null;
-     Creature(){};
      public static Creature getInstance(String chosenCreature,Environment env){
          if (instance == null){
              switch (chosenCreature){
@@ -178,7 +177,6 @@ class Bird extends Creature {
     private Vital flight;
 
     public Bird(Environment env){
-        super();
         setSprite(new Image(getClass().getResourceAsStream("tweetyIdle.png")));
         this.initVitals();
         setHungry(false);
