@@ -17,9 +17,11 @@ public abstract class Creature {
 
      private Vital hunger;
      private Vital health;
+     //Set<Vital> vitals;
      private Map<Food, Integer> inventory;
 
      private static Creature instance = null;
+     Creature(){};
      public static Creature getInstance(String chosenCreature,Environment env){
          if (instance == null){
              switch (chosenCreature){
@@ -122,7 +124,11 @@ public abstract class Creature {
             hunger.decreaseVital(3);
         }
 
-        return (health.getPercentageLevel() > 0);
+        if(health.getPercentageLevel() <= 0){
+            return false;
+        }else{
+            return true;
+        }
     }
 
     public void eat(Food food){
@@ -176,13 +182,25 @@ class Bird extends Creature {
 
     private Vital flight;
 
+    private Image flyingSprite;
+
     public Bird(Environment env){
+        super();
         setSprite(new Image(getClass().getResourceAsStream("tweetyIdle.png")));
+        setFlyingSprite(new Image(getClass().getResourceAsStream("ftweetyFlying.gif")));
         this.initVitals();
         setHungry(false);
         setEnvironment(env);
         setInventory( new HashMap<Food, Integer>());
         setName("Bird");
+    }
+
+    public Image getFlyingSprite() {
+        return flyingSprite;
+    }
+
+    public void setFlyingSprite(Image sprite) {
+        this.flyingSprite = sprite;
     }
 
     public Vital getFlight() {
@@ -235,9 +253,11 @@ class Bird extends Creature {
 class Vampire extends Creature {
     private Boolean isBurning;
     private Vital photosensitivity;
+    private Image burningSprite;
 
     public Vampire(Environment env){
         setSprite(new Image(getClass().getResourceAsStream("vampireIdle.png")));
+        setBurningSprite(new Image(getClass().getResourceAsStream("vampireFire.gif")));
         initVitals();
         setHungry(false);
         setBurning(false);
@@ -252,6 +272,14 @@ class Vampire extends Creature {
 
     public void setBurning(Boolean burning) {
         isBurning = burning;
+    }
+
+    public Image getBurningSprite() {
+        return burningSprite;
+    }
+
+    public void setBurningSprite(Image sprite) {
+        this.burningSprite = sprite;
     }
 
     public Vital getPhotosensitivity() {
@@ -316,32 +344,47 @@ class Vampire extends Creature {
         }
 
 
-        if(Boolean.TRUE.equals(getHungry())){
+        if(getHungry()){
             getHunger().decreaseVital(2);
             getHealth().decreaseVital(2);
         }else{
             getHunger().decreaseVital(3);
         }
 
-        if(Boolean.TRUE.equals(getBurning())){
+        if(getBurning()){
             getHealth().decreaseVital(5);
         }
 
-        return (getHealth().getPercentageLevel() > 0);
+        if(getHealth().getPercentageLevel() <= 0){
+            return false;
+        }else{
+            return true;
+        }
 
     }
 }
 
 class Alien extends Creature {
     private Vital shapeshift;
+    private Image shapeshiftSprite;
     public Alien(Environment env){
         setSprite(new Image(getClass().getResourceAsStream("alienIdle.png")));
+        setShapeshiftSprite(new Image(getClass().getResourceAsStream("alienShapeshift.png")));
         initVitals();
         setHungry(false);
         setEnvironment(env);
         setInventory(new HashMap<Food, Integer>());
         setName("Alien");
     }
+
+    public Image getShapeshiftSprite() {
+        return shapeshiftSprite;
+    }
+
+    public void setShapeshiftSprite(Image sprite) {
+        this.shapeshiftSprite = sprite;
+    }
+
     @Override
     void initVitals() {
         setShapeshift(new Vital(50, "Shapeshift"));
@@ -386,5 +429,11 @@ class Alien extends Creature {
         this.shapeshift = shapeshift;
     }
 
-    public void changeShape() {}
+    public boolean changeShape() {
+        if(shapeshift.getPercentageLevel() - 20 < 0) {
+            return false;
+        }
+        shapeshift.decreaseVital(20);
+        return true;
+    }
 }
