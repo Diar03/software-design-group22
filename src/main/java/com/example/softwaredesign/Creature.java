@@ -20,7 +20,7 @@ public abstract class Creature {
      private Map<Food, Integer> inventory;
 
      private static Creature instance = null;
-     Creature(){};
+     private Creature(){};
      public static Creature getInstance(String chosenCreature,Environment env){
          if (instance == null){
              switch (chosenCreature){
