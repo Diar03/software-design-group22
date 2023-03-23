@@ -15,8 +15,5 @@ public abstract class MiniGame {
     public MiniGame(String miniGameName){
         this.name = miniGameName;
     }
-    //public abstract Boolean awardCoins();
-    //public abstract void endGame();
-
 }
 

@@ -21,10 +21,30 @@ public class RiddleController implements Initializable {
     private Stage stage;
     private int iterator = 0;
     @FXML
+    private Label moneyStatus;
+    @FXML
     private Label currentQuestion;
     @FXML
     private TextField currentAnswer;
 
+    public void goBackToMainScreen(ActionEvent event) throws IOException {
+        main.getEngine().getCreature().increaseCoins(riddle.getEarnedMoney());
+        main.getEngine().getCreature().getHealth().increaseVital(10);
+        main.getEngine().getCreature().getHunger().decreaseVital(5);
+
+        FXMLLoader loader = new FXMLLoader(Main.class.getResource("gameScreen.fxml"));
+        root = loader.load();
+        GameController controller = loader.getController();
+        controller.setMain(main);
+        controller.adaptScreenToCreature();
+        controller.loadImages();
+        controller.updateBars();
+        scene = new Scene(root);
+        stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        stage.setScene(scene);
+        stage.show();
+        main.initSchedulers(controller);
+    }
     private Riddle riddle = new Riddle("Riddle");
     @Override
     public void initialize(URL arg0, ResourceBundle arg1){
@@ -32,31 +52,30 @@ public class RiddleController implements Initializable {
         System.out.println("RIDDLEE");
     }
     public void submit(ActionEvent event) throws IOException {
-        if(currentAnswer.getText().equals(riddle.getAnswers()[iterator])){
+        if(currentAnswer.getText().equals(riddle.getAnswers()[iterator]) && iterator != 5){
             riddle.increaseEarnedMoney();
-            System.out.println(riddle.getEarnedMoney());
-            System.out.println("ONTO THE NEXT QUESTION");
             iterator++;
-            if(iterator == 5){
-                System.out.println("Game is done");
+            moneyStatus.setText("Earned money: " + riddle.getEarnedMoney());
+            if(iterator == riddle.getQuestions().length){
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setHeaderText("GAME SUCCESSFULLY COMPLETED");
+                alert.setContentText("You earned " + riddle.getEarnedMoney() + " coins\n" +
+                        "Health increased: +10\n" +
+                        "Hunger decreased: -5");
+                alert.show();
+                goBackToMainScreen(event);
+            }else{
+                currentQuestion.setText(riddle.getQuestions()[iterator]);
             }
-            currentQuestion.setText(riddle.getQuestions()[iterator]);
         }else{
-            main.getEngine().getCreature().increaseCoins(riddle.getEarnedMoney());
-            main.getEngine().getCreature().getHealth().increaseVital(10);
-            main.getEngine().getCreature().getHunger().decreaseVital(5);
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setHeaderText("GAME OVER");
+            alert.setContentText("You earned " + riddle.getEarnedMoney() + " coins\n" +
+                    "Health increased: +10\n" +
+                    "Hunger decreased: -5");
+            alert.show();
 
-            FXMLLoader loader = new FXMLLoader(Main.class.getResource("gameScreen.fxml"));
-            root = loader.load();
-            GameController controller = loader.getController();
-            controller.setMain(main);
-            controller.adaptScreenToCreature();
-            controller.loadImages();
-            controller.updateBars();
-            scene = new Scene(root);
-            stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-            stage.setScene(scene);
-            stage.show();
+            goBackToMainScreen(event);
         }
     }
     public void setMain(Main theMainInstance){

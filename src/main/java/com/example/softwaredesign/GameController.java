@@ -75,6 +75,7 @@ public class GameController implements Initializable {
     EventHandler<ActionEvent> onItemSelected = event -> {
         System.out.println("Hello");
         try {
+            main.executor.shutdownNow();
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("riddleGameScreen.fxml"));
             root = loader.load();
             RiddleController riddleController = loader.getController();

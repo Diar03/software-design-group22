@@ -29,5 +29,6 @@
          <font>
             <Font name="System Bold" size="15.0" />
          </font></Button>
+      <Label fx:id="moneyStatus" layoutX="48.0" layoutY="23.0" prefHeight="31.0" prefWidth="99.0" text="Earned money: 0" />
    </children>
 </AnchorPane>

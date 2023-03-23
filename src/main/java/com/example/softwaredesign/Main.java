@@ -26,6 +26,7 @@ public class Main extends Application {
         this.engine = engine;
     }
 
+    ScheduledExecutorService executor;
     @Override
     public void start(Stage stage) throws IOException, InterruptedException {
         Parent root;
@@ -53,6 +54,7 @@ public class Main extends Application {
     }
 
     public void initSchedulers(GameController controller){
+        executor = Executors.newScheduledThreadPool(2);
         Runnable vitalUpdater = () -> {
             engine.getCreature().update();
             controller.updateBars();
@@ -62,11 +64,9 @@ public class Main extends Application {
             engine.getEnvironment().setNextTimeOfDay();
             controller.updateTime();
         };
-        executor.scheduleAtFixedRate(vitalUpdater, 5, 10, TimeUnit.SECONDS);
+        executor.scheduleAtFixedRate(vitalUpdater, 5, 1, TimeUnit.SECONDS);
         executor.scheduleAtFixedRate(timeUpdater, 20, 30, TimeUnit.SECONDS);
     }
-
-    ScheduledExecutorService executor = Executors.newScheduledThreadPool(2);
 
 
     public void buyFood(Food item){
