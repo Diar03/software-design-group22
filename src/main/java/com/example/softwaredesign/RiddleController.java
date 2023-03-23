@@ -46,7 +46,6 @@ public class RiddleController implements Initializable {
             main.getEngine().getCreature().getHealth().increaseVital(10);
             main.getEngine().getCreature().getHunger().decreaseVital(5);
 
-
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("gameScreen.fxml"));
             root = loader.load();
             GameController controller = loader.getController();
