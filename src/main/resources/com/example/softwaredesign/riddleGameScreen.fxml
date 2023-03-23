@@ -3,18 +3,31 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.softwaredesign.RiddleController">
    <children>
-      <TextField fx:id="currentAnswer" layoutX="191.0" layoutY="188.0" prefHeight="42.0" prefWidth="217.0" />
-      <Label layoutX="216.0" layoutY="44.0" prefHeight="67.0" prefWidth="168.0" text="Riddle Game">
+      <ImageView fitHeight="487.0" fitWidth="716.0" layoutX="-6.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@gameBack.png" />
+         </image>
+      </ImageView>
+      <TextField fx:id="currentAnswer" layoutX="284.0" layoutY="170.0" prefHeight="42.0" prefWidth="217.0" style="-fx-background-radius: 10px;" />
+      <Label layoutX="309.0" layoutY="31.0" prefHeight="67.0" prefWidth="168.0" text="Riddle Game">
          <font>
-            <Font size="28.0" />
+            <Font name="System Bold" size="28.0" />
          </font>
       </Label>
-      <Label fx:id="currentQuestion" layoutX="241.0" layoutY="138.0" text="Question goes here" />
-      <Button alignment="CENTER" layoutX="247.0" layoutY="266.0" mnemonicParsing="false" onAction="#submit" prefHeight="52.0" prefWidth="92.0" text="Submit" textAlignment="CENTER" underline="true" />
+      <Label fx:id="currentQuestion" alignment="CENTER" layoutX="92.0" layoutY="84.0" prefHeight="76.0" prefWidth="600.0" text="Question goes here">
+         <font>
+            <Font size="16.0" />
+         </font></Label>
+      <Button alignment="CENTER" layoutX="340.0" layoutY="238.0" mnemonicParsing="false" onAction="#submit" prefHeight="30.0" prefWidth="106.0" style="-fx-background-color: black;" text="Submit" textAlignment="CENTER" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font></Button>
    </children>
 </AnchorPane>
