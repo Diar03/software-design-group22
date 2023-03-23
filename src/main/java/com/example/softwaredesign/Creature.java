@@ -17,7 +17,6 @@ public abstract class Creature {
 
      private Vital hunger;
      private Vital health;
-     //Set<Vital> vitals;
      private Map<Food, Integer> inventory;
 
      private static Creature instance = null;
@@ -124,11 +123,7 @@ public abstract class Creature {
             hunger.decreaseVital(3);
         }
 
-        if(health.getPercentageLevel() <= 0){
-            return false;
-        }else{
-            return true;
-        }
+        return (health.getPercentageLevel() > 0);
     }
 
     public void eat(Food food){
@@ -323,22 +318,18 @@ class Vampire extends Creature {
         }
 
 
-        if(getHungry()){
+        if(Boolean.TRUE.equals(getHungry())){
             getHunger().decreaseVital(2);
             getHealth().decreaseVital(2);
         }else{
             getHunger().decreaseVital(3);
         }
 
-        if(getBurning()){
+        if(Boolean.TRUE.equals(getBurning())){
             getHealth().decreaseVital(5);
         }
 
-        if(getHealth().getPercentageLevel() <= 0){
-            return false;
-        }else{
-            return true;
-        }
+        return (getHealth().getPercentageLevel() > 0);
 
     }
 }

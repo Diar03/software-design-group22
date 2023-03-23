@@ -1,6 +1,5 @@
 package com.example.softwaredesign;
 
-import com.example.softwaredesign.Time;
 import javafx.scene.image.Image;
 
 class Environment{
@@ -65,13 +64,10 @@ class Environment{
     }
 
     void setNextTimeOfDay() {
-        switch (this.timeOfDay){
-            case DAY:
-                this.timeOfDay = Time.NIGHT;
-                break;
-            case NIGHT:
-                this.timeOfDay = Time.DAY;
-                break;
+        if(this.timeOfDay == Time.DAY){
+            this.timeOfDay = Time.NIGHT;
+        }else{
+            this.timeOfDay = Time.DAY;
         }
     }
 

@@ -14,7 +14,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class Main extends Application {
-    private Parent root;
+
     private Scene scene;
     private Engine engine;
 
@@ -28,6 +28,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws IOException, InterruptedException {
+        Parent root;
         // Create engine instance
         engine = new Engine();
 
@@ -46,31 +47,26 @@ public class Main extends Application {
         stage.show();
         stage.setOnCloseRequest(event -> {
             event.consume();
+            executor.shutdown();
             exitGame(stage);
         });
     }
 
     public void initSchedulers(GameController controller){
-        Runnable VitalUpdater = new Runnable() {
-            public void run() {
-                System.out.println("Vitals being updated");
-                engine.getCreature().update();
-                controller.updateBars();
+        Runnable vitalUpdater = () -> {
+            engine.getCreature().update();
+            controller.updateBars();
 
-            }
         };
-        Runnable TimeUpdater = new Runnable() {
-            public void run() {
-                engine.getEnvironment().setNextTimeOfDay();
-                controller.updateTime();
-            }
+        Runnable timeUpdater = () -> {
+            engine.getEnvironment().setNextTimeOfDay();
+            controller.updateTime();
         };
-
-        ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-        executor.scheduleAtFixedRate(VitalUpdater, 5, 10, TimeUnit.SECONDS);
-        ScheduledExecutorService exe = Executors.newScheduledThreadPool(1);
-        exe.scheduleAtFixedRate(TimeUpdater, 20, 30, TimeUnit.SECONDS);
+        executor.scheduleAtFixedRate(vitalUpdater, 5, 10, TimeUnit.SECONDS);
+        executor.scheduleAtFixedRate(timeUpdater, 20, 30, TimeUnit.SECONDS);
     }
+
+    ScheduledExecutorService executor = Executors.newScheduledThreadPool(2);
 
 
     public void buyFood(Food item){

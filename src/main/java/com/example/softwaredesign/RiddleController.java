@@ -47,6 +47,10 @@ public class RiddleController implements Initializable {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("gameScreen.fxml"));
             root = loader.load();
             GameController controller = loader.getController();
+            controller.setMain(main);
+            controller.adaptScreenToCreature();
+            controller.loadImages();
+            controller.updateBars();
             scene = new Scene(root);
             stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
             stage.setScene(scene);
