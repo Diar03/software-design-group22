@@ -77,7 +77,7 @@ public class GameController implements Initializable {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("riddleGameScreen.fxml"));
             root = loader.load();
             RiddleController riddleController = loader.getController();
-
+            riddleController.setMain(main);
             scene = new Scene(root);
             stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
             stage.setScene(scene);

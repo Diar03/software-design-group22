@@ -14,6 +14,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class RiddleController implements Initializable {
+    private Main main;
     private Parent root;
     private Scene scene;
     private Stage stage;
@@ -41,6 +42,8 @@ public class RiddleController implements Initializable {
             currentQuestion.setText(riddle.getQuestions()[iterator]);
         }else{
             System.out.println("GAME OVER");
+            main.getEngine().getCreature().increaseCoins(riddle.getEarnedMoney());
+            System.out.println(main.getEngine().getCreature().getCoins());
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("gameScreen.fxml"));
             root = loader.load();
             GameController controller = loader.getController();
@@ -49,6 +52,9 @@ public class RiddleController implements Initializable {
             stage.setScene(scene);
             stage.show();
         }
+    }
+    public void setMain(Main theMainInstance){
+        this.main = theMainInstance;
     }
 }
 
