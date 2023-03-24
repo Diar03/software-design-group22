@@ -54,6 +54,9 @@ public class GameController implements Initializable {
 
     private Button shapeshiftButton;
 
+    private Label flightLabel;
+    private Label photosensitivtyLabel;
+    private Label shapeshiftLabel;
 
     @FXML
     private ChoiceBox<Food> eatChoiceBox;
@@ -114,26 +117,42 @@ public class GameController implements Initializable {
 
                 flightBar = new ProgressBar();
                 flightBar.setLayoutX(468.0);
-                flightBar.setLayoutY(75);
-                flightBar.setPrefHeight(25.0);
+                flightBar.setLayoutY(94);
+                flightBar.setPrefHeight(15.0);
                 flightBar.setPrefWidth(158.0);
                 flightBar.setStyle("-fx-accent: blue;");
                 flightBar.setProgress(0.5);
 
+                flightLabel = new Label();
+                flightLabel.setLayoutX(527);
+                flightLabel.setLayoutY(75);
+                flightLabel.setText(" Flight ");
+                flightLabel.setStyle("-fx-background-color: White; -fx-background-radius: 5px; -fx-label-padding: 0  2px;");
+
                 pane.getChildren().add(flyButton);
                 pane.getChildren().add(flightBar);
+                pane.getChildren().add(flightLabel);
                 displayCurrCoin();
                 break;
             case "Vampire":
                 // Code for adding vampire nodes
                 photosensitivityBar = new ProgressBar();
                 photosensitivityBar.setLayoutX(468.0);
-                photosensitivityBar.setLayoutY(75);
-                photosensitivityBar.setPrefHeight(25.0);
+                photosensitivityBar.setLayoutY(94);
+                photosensitivityBar.setPrefHeight(15.0);
                 photosensitivityBar.setPrefWidth(158.0);
                 photosensitivityBar.setStyle("-fx-accent: yellow;");
                 photosensitivityBar.setProgress(0.5);
+
+
+                photosensitivtyLabel = new Label();
+                photosensitivtyLabel.setLayoutX(500);
+                photosensitivtyLabel.setLayoutY(75);
+                photosensitivtyLabel.setText(" Photosensitivity ");
+                photosensitivtyLabel.setStyle("-fx-background-color: White; -fx-background-radius: 5px; -fx-label-padding: 0  2px;");
+
                 pane.getChildren().add(photosensitivityBar);
+                pane.getChildren().add(photosensitivtyLabel);
                 displayCurrCoin();
                 break;
             case "Alien":
@@ -148,14 +167,23 @@ public class GameController implements Initializable {
 
                 shapeshiftBar = new ProgressBar();
                 shapeshiftBar.setLayoutX(468.0);
-                shapeshiftBar.setLayoutY(75);
-                shapeshiftBar.setPrefHeight(25.0);
+                shapeshiftBar.setLayoutY(94);
+                shapeshiftBar.setPrefHeight(15.0);
                 shapeshiftBar.setPrefWidth(158.0);
                 shapeshiftBar.setStyle("-fx-accent: green;");
                 shapeshiftBar.setProgress(0.5);
                 pane.getChildren().add(shapeshiftButton);
                 shapeshiftButton.setOnAction(this::shapeshift);
+
+                shapeshiftLabel = new Label();
+                shapeshiftLabel.setLayoutX(510);
+                shapeshiftLabel.setLayoutY(75);
+                shapeshiftLabel.setText(" Shape-shift ");
+                shapeshiftLabel.setStyle("-fx-background-color: White; -fx-background-radius: 5px; -fx-label-padding: 0  2px;");
+
+
                 pane.getChildren().add(shapeshiftBar);
+                pane.getChildren().add(shapeshiftLabel);
                 displayCurrCoin();
                 break;
         }
