@@ -1,17 +1,16 @@
 package com.example.softwaredesign;
 
-import com.example.softwaredesign.Time;
 import javafx.scene.image.Image;
 
 class Environment{
-    String name;
+    private String name;
 
-    Image daySprite;
-    Image nightSprite;
-    int sunlightIntensity;
-    Time timeOfDay;
-
-    public Environment(String name, int sunlightIntensity, Time timeOfDay) {
+    private Image daySprite;
+    private Image nightSprite;
+    private int sunlightIntensity;
+    private Time timeOfDay;
+    private static Environment instance = null;
+    private Environment(String name, int sunlightIntensity, Time timeOfDay) {
         this.name = name;
         switch (name){
             case "Forest":
@@ -33,7 +32,12 @@ class Environment{
         this.sunlightIntensity = sunlightIntensity;
         this.timeOfDay = timeOfDay;
     }
-
+    public static Environment getInstance(String name, int sunlightIntensity, Time timeOfDay){
+        if (instance == null){
+            instance = new Environment(name,sunlightIntensity, timeOfDay);
+        }
+        return instance;
+    }
     public String getName() {
         return name;
     }
@@ -42,13 +46,6 @@ class Environment{
         this.name = name;
     }
 
-    /*public Boolean getRaining() {
-        return isRaining;
-    }
-
-    public void setRaining(Boolean raining) {
-        isRaining = raining;
-    }*/
 
     public int getSunlightIntensity() {
         return sunlightIntensity;
@@ -67,13 +64,26 @@ class Environment{
     }
 
     void setNextTimeOfDay() {
-        switch (this.timeOfDay){
-            case DAY:
-                this.timeOfDay = Time.NIGHT;
-                break;
-            case NIGHT:
-                this.timeOfDay = Time.DAY;
-                break;
+        if(this.timeOfDay == Time.DAY){
+            this.timeOfDay = Time.NIGHT;
+        }else{
+            this.timeOfDay = Time.DAY;
         }
+    }
+
+    public Image getDaySprite() {
+        return daySprite;
+    }
+
+    public void setDaySprite(Image daySprite) {
+        this.daySprite = daySprite;
+    }
+
+    public Image getNightSprite() {
+        return nightSprite;
+    }
+
+    public void setNightSprite(Image nightSprite) {
+        this.nightSprite = nightSprite;
     }
 }

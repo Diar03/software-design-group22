@@ -28,9 +28,18 @@ public class Vital {
     public void increaseVital(int value){
         int newVal =  getPercentageLevel();
         setPercentageLevel(newVal + value);
+        if(newVal + value > 100){
+            setPercentageLevel(100);
+        }else {
+            setPercentageLevel(newVal + value);
+        }
     }
     public void decreaseVital(int value){
         int newVal =  getPercentageLevel();
-        setPercentageLevel(newVal - value);
+        if(newVal - value < 0){
+            setPercentageLevel(0);
+        }else {
+            setPercentageLevel(newVal - value);
+        }
     }
 }

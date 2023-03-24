@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.concurrent.Executors;
@@ -13,13 +14,22 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class Main extends Application {
-    Parent root;
-    public Scene scene;
-    public Engine engine;
 
+    private Scene scene;
+    private Engine engine;
 
+    public Engine getEngine() {
+        return engine;
+    }
+
+    public void setEngine(Engine engine) {
+        this.engine = engine;
+    }
+
+    ScheduledExecutorService executor;
     @Override
     public void start(Stage stage) throws IOException, InterruptedException {
+        Parent root;
         // Create engine instance
         engine = new Engine();
 
@@ -43,57 +53,50 @@ public class Main extends Application {
     }
 
     public void initSchedulers(GameController controller){
-        Runnable VitalUpdater = new Runnable() {
-            public void run() {
-                System.out.println("Vitals being updated");
-                engine.creature.update();
-                controller.updateBars();
+        executor = Executors.newScheduledThreadPool(2);
+        Runnable vitalUpdater = () -> {
+            engine.getCreature().update();
+            controller.updateBars();
 
-            }
         };
-        Runnable TimeUpdater = new Runnable() {
-            public void run() {
-                engine.getEnvironment().setNextTimeOfDay();
-                controller.updateTime();
-            }
+        Runnable timeUpdater = () -> {
+            engine.getEnvironment().setNextTimeOfDay();
+            controller.updateTime();
         };
-
-        ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-        executor.scheduleAtFixedRate(VitalUpdater, 5, 10, TimeUnit.SECONDS);
-        ScheduledExecutorService exe = Executors.newScheduledThreadPool(1);
-        exe.scheduleAtFixedRate(TimeUpdater, 20, 30, TimeUnit.SECONDS);
+        executor.scheduleAtFixedRate(vitalUpdater, 10, 10, TimeUnit.SECONDS);
+        executor.scheduleAtFixedRate(timeUpdater, 50, 50, TimeUnit.SECONDS);
     }
 
 
     public void buyFood(Food item){
         switch (item){
             case SALAD:
-                if(engine.creature.coins < 20){
+                if(engine.getCreature().getCoins() < 20){
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setContentText("Not enough coins to buy this item");
                     alert.showAndWait();
                     return;
                 }else{
-                    engine.creature.coins -= 20;
+                    engine.getCreature().deccreaseCoins(20);
                 }
                 break;
             case MEAT:
-                if(engine.creature.coins < 25){
+                if(engine.getCreature().getCoins() < 25){
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setContentText("Not enough coins to buy this item");
                     alert.showAndWait();
                     return;
                 }else{
-                    engine.creature.coins -= 25;
+                    engine.getCreature().deccreaseCoins(25);
                 }
                 break;
         }
 
-        Integer currentVal = engine.creature.inventory.get(item);
+        Integer currentVal = engine.getCreature().getInventory().get(item);
         if(currentVal == null){
-            engine.creature.inventory.put(item, 1);
+            engine.getCreature().getInventory().put(item, 1);
         }else{
-            engine.creature.inventory.put(item, currentVal + 1);
+            engine.getCreature().getInventory().put(item, currentVal + 1);
         }
 
     }
@@ -105,6 +108,7 @@ public class Main extends Application {
         alert.setHeaderText("*ALERT* Quitting Vivarium game");
         alert.setContentText("Are you sure you want to quit “Vivarium” game??? ");
         if(alert.showAndWait().get() == ButtonType.OK){
+            executor.shutdown();
             stage.close();
         }
     }

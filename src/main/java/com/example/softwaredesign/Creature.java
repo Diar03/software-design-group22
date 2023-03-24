@@ -6,22 +6,109 @@ import javafx.scene.image.Image;
 import java.util.HashMap;
 import java.util.Map;
 
-abstract class Creature {
-     int coins = 50;
-     Image sprite;
-     Boolean isHungry;
+public abstract class Creature {
+     private int coins = 50;
+     private Image sprite;
+     private Boolean isHungry;
 
-     String name;
+     private String name;
 
-     Environment environment;
+     private Environment environment;
 
-     Vital hunger;
-     Vital health;
+     private Vital hunger;
+     private Vital health;
      //Set<Vital> vitals;
-     Map<Food, Integer> inventory;
+     private Map<Food, Integer> inventory;
+
+     private static Creature instance = null;
+     Creature(){};
+     public static Creature getInstance(String chosenCreature,Environment env){
+         if (instance == null){
+             switch (chosenCreature){
+                 case "Bird":
+                     instance = new Bird(env);
+                     break;
+                 case "Vampire":
+                     instance = new Vampire(env);
+                     break;
+                 case "Alien":
+                     instance = new Alien(env);
+                     break;
+                 default:
+                     System.err.println("Invalid creature!!");
+                     break;
+             }
+         }
+         return instance;
+     }
+
+    public int getCoins() {
+        return this.coins;
+    }
+
+    public void setCoins(int coins) {
+        this.coins = coins;
+    }
+
+    public Image getSprite() {
+        return sprite;
+    }
+
+    public void setSprite(Image sprite) {
+        this.sprite = sprite;
+    }
+
+    public Boolean getHungry() {
+        return isHungry;
+    }
+
+    public void setHungry(Boolean hungry) {
+        isHungry = hungry;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Environment getEnvironment() {
+        return environment;
+    }
+
+    public void setEnvironment(Environment environment) {
+        this.environment = environment;
+    }
+
+    public Vital getHunger() {
+        return hunger;
+    }
+
+    public void setHunger(Vital hunger) {
+        this.hunger = hunger;
+    }
+
+    public Vital getHealth() {
+        return health;
+    }
+
+    public void setHealth(Vital health) {
+        this.health = health;
+    }
+
+    public Map<Food, Integer> getInventory() {
+        return inventory;
+    }
+
+    public void setInventory(Map<Food, Integer> inventory) {
+        this.inventory = inventory;
+    }
 
     static void playMiniGame() {}
-    static void sleep() {}
+
+    abstract boolean sleep();
     abstract void initVitals();
 
     public boolean update(){
@@ -43,7 +130,7 @@ abstract class Creature {
             return true;
         }
     }
-    static void increaseCoins(int value) {}
+
     public void eat(Food food){
 
         if(!inventory.containsKey(food)){
@@ -63,77 +150,194 @@ abstract class Creature {
 
         switch (food){
             case MEAT:
-                if((hunger.getPercentageLevel() + 20) > 100){
-                    hunger.increaseVital(100 - hunger.getPercentageLevel());
-                }else{
-                    hunger.increaseVital(20);
-                }
+                hunger.increaseVital(20);
                 break;
             case SALAD:
-                if((hunger.getPercentageLevel() + 25) > 100){
-                    hunger.increaseVital(100 - hunger.getPercentageLevel());
-                }else{
-                    hunger.increaseVital(25);
-                }
+                hunger.increaseVital(25);
                 break;
         }
 
         inventory.put(food, inventory.get(food) - 1);
     }
+    void increaseCoins(int value) {
+        int currVal = getCoins();
+        setCoins(currVal + value);
+    }
+    void deccreaseCoins(int value) {
+        int currVal = getCoins();
+        setCoins(currVal - value);
+    }
+
 }
 
 class Bird extends Creature {
 
-    Vital flight;
+    private Vital flight;
+
+    private Image flyingSprite;
 
     public Bird(Environment env){
-        this.sprite = new Image(getClass().getResourceAsStream("tweetyIdle.png"));
+        super();
+        setSprite(new Image(getClass().getResourceAsStream("tweetyIdle.png")));
+        setFlyingSprite(new Image(getClass().getResourceAsStream("ftweetyFlying.gif")));
         this.initVitals();
-        this.isHungry = false;
-        this.environment = env;
-        this.inventory = new HashMap<Food, Integer>();
-        this.name = "Bird";
-    }
-    @Override
-    void initVitals() {
-        flight = new Vital(50, "Flight");
-        hunger = new Vital(50, "Hunger");
-        health = new Vital(50, "Health");
+        setHungry(false);
+        setEnvironment(env);
+        setInventory( new HashMap<Food, Integer>());
+        setName("Bird");
     }
 
-    public void fly(){}
+    public Image getFlyingSprite() {
+        return flyingSprite;
+    }
+
+    public void setFlyingSprite(Image sprite) {
+        this.flyingSprite = sprite;
+    }
+
+    public Vital getFlight() {
+        return flight;
+    }
+
+    public void setFlight(Vital flight) {
+        this.flight = flight;
+    }
+
+    @Override
+    void initVitals() {
+        setFlight(new Vital(50, "Flight"));
+        setHunger(new Vital(50, "Hunger"));
+        setHealth(new Vital(50, "Health"));
+    }
+
+    @Override
+    public boolean sleep() {
+        if(getEnvironment().getTimeOfDay() == Time.NIGHT) {
+            if((flight.getPercentageLevel() + 20) > 100){
+                flight.increaseVital(100 - flight.getPercentageLevel());
+            }else{
+                flight.increaseVital(20);
+            }
+            if((getHunger().getPercentageLevel() + 20) > 100){
+                getHunger().increaseVital(100 - getHunger().getPercentageLevel());
+            }else{
+                getHunger().increaseVital(20);
+            }
+            if((getHealth().getPercentageLevel() + 20) > 100){
+                getHealth().increaseVital(100 - getHealth().getPercentageLevel());
+            }else{
+                getHealth().increaseVital(20);
+            }
+            getEnvironment().setNextTimeOfDay();
+            return true;
+        }
+        else {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setContentText("You cannot sleep during the Day");
+            alert.showAndWait();
+            return false;
+        }
+    }
+
+    public boolean fly(){
+        if(this.getFlight().getPercentageLevel() <= 0){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setContentText("You do not have any flight left...");
+            alert.showAndWait();
+            return false;
+        }else{
+            return true;
+        }
+
+    }
 }
 
 class Vampire extends Creature {
-    Boolean isBurning;
-    Vital photosensitivity;
+    private Boolean isBurning;
+    private Vital photosensitivity;
+    private Image burningSprite;
+
     public Vampire(Environment env){
-        this.sprite = new Image(getClass().getResourceAsStream("vampireIdle.png"));
+        setSprite(new Image(getClass().getResourceAsStream("vampireIdle.png")));
+        setBurningSprite(new Image(getClass().getResourceAsStream("vampireFire.gif")));
         initVitals();
-        this.isHungry = false;
-        this.isBurning = false;
-        this.environment = env;
-        this.inventory = new HashMap<Food, Integer>();
-        this.name = "Vampire";
+        setHungry(false);
+        setBurning(false);
+        setEnvironment(env);
+        setInventory(new HashMap<Food, Integer>());
+        setName("Vampire");
     }
+
+    public Boolean getBurning() {
+        return isBurning;
+    }
+
+    public void setBurning(Boolean burning) {
+        isBurning = burning;
+    }
+
+    public Image getBurningSprite() {
+        return burningSprite;
+    }
+
+    public void setBurningSprite(Image sprite) {
+        this.burningSprite = sprite;
+    }
+
+    public Vital getPhotosensitivity() {
+        return photosensitivity;
+    }
+
+    public void setPhotosensitivity(Vital photosensitivity) {
+        this.photosensitivity = photosensitivity;
+    }
+
     @Override
     void initVitals() {
-        photosensitivity = new Vital(50, "Photosensitivity");
-        hunger = new Vital(50, "Hunger");
-        health = new Vital(50, "Health");
+        setPhotosensitivity(new Vital(50, "Photosensitivity"));
+        setHunger(new Vital(50, "Hunger"));
+        setHealth(new Vital(50, "Health"));
+    }
 
+    @Override
+    boolean sleep() {
+        if(getEnvironment().getTimeOfDay() == Time.DAY) {
+            if((photosensitivity.getPercentageLevel() + 20) > 100){
+                photosensitivity.increaseVital(100 - photosensitivity.getPercentageLevel());
+            }else{
+                photosensitivity.increaseVital(20);
+            }
+            if((getHunger().getPercentageLevel() + 20) > 100){
+                getHunger().increaseVital(100 - getHunger().getPercentageLevel());
+            }else{
+                getHunger().increaseVital(20);
+            }
+            if((getHealth().getPercentageLevel() + 20) > 100){
+                getHealth().increaseVital(100 - getHealth().getPercentageLevel());
+            }else{
+                getHealth().increaseVital(20);
+            }
+            getEnvironment().setNextTimeOfDay();
+            return true;
+        }
+        else {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setContentText("You cannot sleep during the Night");
+            alert.showAndWait();
+            return false;
+        }
     }
 
     @Override
     public boolean update() {
 
-        if(environment.timeOfDay == Time.DAY){
-            int currentIntensity = environment.getSunlightIntensity();
+        if(getEnvironment().getTimeOfDay() == Time.DAY){
+            int currentIntensity = getEnvironment().getSunlightIntensity();
             photosensitivity.decreaseVital(currentIntensity);
         }
 
-        if(hunger.getPercentageLevel() < 20){
-            isHungry = true;
+        if(getHunger().getPercentageLevel() < 20){
+            setHungry(true);
         }
 
 
@@ -142,18 +346,18 @@ class Vampire extends Creature {
         }
 
 
-        if(isHungry){
-            hunger.decreaseVital(2);
-            health.decreaseVital(2);
+        if(getHungry()){
+            getHunger().decreaseVital(2);
+            getHealth().decreaseVital(2);
         }else{
-            hunger.decreaseVital(3);
+            getHunger().decreaseVital(3);
         }
 
-        if(isBurning){
-            health.decreaseVital(5);
+        if(getBurning()){
+            getHealth().decreaseVital(5);
         }
 
-        if(health.getPercentageLevel() <= 0){
+        if(getHealth().getPercentageLevel() <= 0){
             return false;
         }else{
             return true;
@@ -163,21 +367,75 @@ class Vampire extends Creature {
 }
 
 class Alien extends Creature {
-    Vital shapeshift;
+    private Vital shapeshift;
+    private Image shapeshiftSprite;
     public Alien(Environment env){
-        this.sprite = new Image(getClass().getResourceAsStream("alienIdle.png"));
+        setSprite(new Image(getClass().getResourceAsStream("alienIdle.png")));
+        setShapeshiftSprite(new Image(getClass().getResourceAsStream("alienShapeshift.png")));
         initVitals();
-        this.isHungry = false;
-        this.environment = env;
-        this.inventory = new HashMap<>();
-        this.name = "Alien";
-    }
-    @Override
-    void initVitals() {
-        shapeshift = new Vital(50, "Shapeshift");
-        hunger = new Vital(50, "Hunger");
-        health = new Vital(50, "Health");
+        setHungry(false);
+        setEnvironment(env);
+        setInventory(new HashMap<Food, Integer>());
+        setName("Alien");
     }
 
-    public void changeShape() {}
+    public Image getShapeshiftSprite() {
+        return shapeshiftSprite;
+    }
+
+    public void setShapeshiftSprite(Image sprite) {
+        this.shapeshiftSprite = sprite;
+    }
+
+    @Override
+    void initVitals() {
+        setShapeshift(new Vital(50, "Shapeshift"));
+        setHunger(new Vital(50, "Hunger"));
+        setHealth(new Vital(50, "Health"));
+    }
+
+    @Override
+    boolean sleep() {
+        if(getEnvironment().getTimeOfDay() == Time.NIGHT) {
+            if((shapeshift.getPercentageLevel() + 20) > 100){
+                shapeshift.increaseVital(100 - shapeshift.getPercentageLevel());
+            }else{
+                shapeshift.increaseVital(20);
+            }
+            if((getHunger().getPercentageLevel() + 20) > 100){
+                getHunger().increaseVital(100 - getHunger().getPercentageLevel());
+            }else{
+                getHunger().increaseVital(20);
+            }
+            if((getHealth().getPercentageLevel() + 20) > 100){
+                getHealth().increaseVital(100 - getHealth().getPercentageLevel());
+            }else{
+                getHealth().increaseVital(20);
+            }
+            getEnvironment().setNextTimeOfDay();
+            return true;
+        }
+        else {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setContentText("You cannot sleep during the Day");
+            alert.showAndWait();
+            return false;
+        }
+    }
+
+    public Vital getShapeshift() {
+        return shapeshift;
+    }
+
+    public void setShapeshift(Vital shapeshift) {
+        this.shapeshift = shapeshift;
+    }
+
+    public boolean changeShape() {
+        if(shapeshift.getPercentageLevel() - 20 < 0) {
+            return false;
+        }
+        shapeshift.decreaseVital(20);
+        return true;
+    }
 }

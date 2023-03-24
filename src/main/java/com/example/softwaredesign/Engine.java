@@ -1,9 +1,9 @@
 package com.example.softwaredesign;
 
 public class Engine {
-    Initalizer initalizer;
-    Creature creature;
-    Environment environment;
+    private Initalizer initalizer;
+    private Creature creature;
+    private Environment environment;
 
     public Creature getCreature() {
         return creature;
@@ -19,6 +19,14 @@ public class Engine {
 
     public void setEnvironment(Environment environment) {
         this.environment = environment;
+    }
+
+    public Initalizer getInitalizer() {
+        return initalizer;
+    }
+
+    public void setInitalizer(Initalizer initalizer) {
+        this.initalizer = initalizer;
     }
 
     static void displayMainScreen() {}
