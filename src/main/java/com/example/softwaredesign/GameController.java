@@ -34,7 +34,8 @@ public class GameController implements Initializable {
 
     @FXML
     private ImageView creatureView;
-
+    @FXML
+    private Label currCoin;
     @FXML
     private ComboBox<Food> shop;
 
@@ -63,6 +64,9 @@ public class GameController implements Initializable {
 
     private Food[] shopItems = {Food.MEAT, Food.SALAD};
 
+    public void showCurrCoin (){
+        currCoin.setText(""+main.getEngine().getCreature().getCoins());
+    }
     @Override
     public void initialize(URL arg0, ResourceBundle arg1){
         games.getItems().addAll(gamesArray);
@@ -110,6 +114,7 @@ public class GameController implements Initializable {
 
                 pane.getChildren().add(flyButton);
                 pane.getChildren().add(flightBar);
+                showCurrCoin();
                 break;
             case "Vampire":
                 // Code for adding vampire nodes
@@ -121,6 +126,7 @@ public class GameController implements Initializable {
                 photosensitivityBar.setStyle("-fx-accent: yellow;");
                 photosensitivityBar.setProgress(0.5);
                 pane.getChildren().add(photosensitivityBar);
+                showCurrCoin();
                 break;
             case "Alien":
                 shapeshiftButton = new Button("Shapeshift");
@@ -142,6 +148,7 @@ public class GameController implements Initializable {
                 pane.getChildren().add(shapeshiftButton);
                 shapeshiftButton.setOnAction(this::shapeshift);
                 pane.getChildren().add(shapeshiftBar);
+                showCurrCoin();
                 break;
         }
     }
@@ -156,6 +163,7 @@ public class GameController implements Initializable {
         }
 
         main.buyFood(choice);
+        showCurrCoin();
     }
 
     public void updateBars(){
