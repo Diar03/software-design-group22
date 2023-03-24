@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -64,6 +65,15 @@ public class GameController implements Initializable {
 
     public void displayCurrCoin(){
         currCoin.setText(""+main.getEngine().getCreature().getCoins());
+    }
+
+    public void displayInventory(){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText("INVENTORY");
+        alert.setContentText("You have now... \n"+
+                "Meat:  " + main.getEngine().getCreature().getInventory().get(Food.MEAT) + "\n" +
+                "Salad:  " + main.getEngine().getCreature().getInventory().get(Food.SALAD) + "\n");
+        alert.show();
     }
     @Override
     public void initialize(URL arg0, ResourceBundle arg1){
@@ -162,6 +172,8 @@ public class GameController implements Initializable {
 
         main.buyFood(choice);
         displayCurrCoin();
+        displayInventory();
+
     }
 
     public void updateBars(){
@@ -199,6 +211,7 @@ public class GameController implements Initializable {
         }
         main.getEngine().getCreature().eat(choice);
         updateBars();
+        displayInventory();
     }
     public void updateTime(){
         Environment curEnv = main.getEngine().getEnvironment();
@@ -249,6 +262,10 @@ public class GameController implements Initializable {
         }
         creatureView.setLayoutY(260);
         creatureView.setImage(main.getEngine().getCreature().getSprite());
+    }
+
+    public Stage getStage() {
+        return stage;
     }
 
     public void setMain(Main theMainInstance){
