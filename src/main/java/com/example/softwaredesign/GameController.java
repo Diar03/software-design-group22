@@ -10,9 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import org.controlsfx.control.action.Action;
 
 import java.io.IOException;
 import java.net.URL;
@@ -64,7 +62,7 @@ public class GameController implements Initializable {
 
     private Food[] shopItems = {Food.MEAT, Food.SALAD};
 
-    public void showCurrCoin (){
+    public void displayCurrCoin(){
         currCoin.setText(""+main.getEngine().getCreature().getCoins());
     }
     @Override
@@ -114,7 +112,7 @@ public class GameController implements Initializable {
 
                 pane.getChildren().add(flyButton);
                 pane.getChildren().add(flightBar);
-                showCurrCoin();
+                displayCurrCoin();
                 break;
             case "Vampire":
                 // Code for adding vampire nodes
@@ -126,7 +124,7 @@ public class GameController implements Initializable {
                 photosensitivityBar.setStyle("-fx-accent: yellow;");
                 photosensitivityBar.setProgress(0.5);
                 pane.getChildren().add(photosensitivityBar);
-                showCurrCoin();
+                displayCurrCoin();
                 break;
             case "Alien":
                 shapeshiftButton = new Button("Shapeshift");
@@ -148,7 +146,7 @@ public class GameController implements Initializable {
                 pane.getChildren().add(shapeshiftButton);
                 shapeshiftButton.setOnAction(this::shapeshift);
                 pane.getChildren().add(shapeshiftBar);
-                showCurrCoin();
+                displayCurrCoin();
                 break;
         }
     }
@@ -163,7 +161,7 @@ public class GameController implements Initializable {
         }
 
         main.buyFood(choice);
-        showCurrCoin();
+        displayCurrCoin();
     }
 
     public void updateBars(){
