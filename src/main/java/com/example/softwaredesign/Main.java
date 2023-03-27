@@ -31,7 +31,7 @@ public class Main extends Application {
     public void start(Stage stage) throws IOException, InterruptedException {
         Parent root;
         // Create engine instance
-        engine = new Engine();
+        engine = Engine.getInstance();
 
         // Load the initial scene
         FXMLLoader loader = new FXMLLoader(Main.class.getResource("scene1.fxml"));
