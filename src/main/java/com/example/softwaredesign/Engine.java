@@ -28,6 +28,19 @@ public class Engine {
     public void setInitalizer(Initalizer initalizer) {
         this.initalizer = initalizer;
     }
+    private static Engine instance = null;
+
+    private Engine() {
+        initalizer = null;
+        environment = null;
+        creature = null;
+    }
+    public static Engine getInstance(){
+        if (instance == null){
+            instance = new Engine();
+        }
+        return instance;
+    }
 
     static void displayMainScreen() {}
     static void displayGameMenu() {}
