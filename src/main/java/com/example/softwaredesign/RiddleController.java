@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class RiddleController implements Initializable {
+public class RiddleController extends Screen implements Initializable {
     private Main main;
     private Parent root;
     private Scene scene;

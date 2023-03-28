@@ -14,7 +14,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class Controller {
+public class Controller extends Screen{
 
     private Stage stage;
     private Scene scene;
@@ -71,6 +71,7 @@ public class Controller {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("gameScreen.fxml"));
             root = loader.load();
             GameController controller = loader.getController();
+            Engine.getInstance().setScreenController(controller);
             controller.setMain(main);
             controller.adaptScreenToCreature();
             controller.loadImages();

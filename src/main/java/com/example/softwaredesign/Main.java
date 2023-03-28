@@ -6,7 +6,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.concurrent.Executors;
@@ -37,7 +36,7 @@ public class Main extends Application {
         FXMLLoader loader = new FXMLLoader(Main.class.getResource("scene1.fxml"));
         root = loader.load();
         Controller controller = loader.getController();
-
+        engine.setScreenController(loader.getController());
         // Pass reference of main to the controller
         controller.setMain(this);
 
@@ -77,7 +76,7 @@ public class Main extends Application {
                     alert.showAndWait();
                     return;
                 }else{
-                    engine.getCreature().deccreaseCoins(20);
+                    engine.getCreature().decreaseCoins(20);
                 }
                 break;
             case MEAT:
@@ -87,7 +86,7 @@ public class Main extends Application {
                     alert.showAndWait();
                     return;
                 }else{
-                    engine.getCreature().deccreaseCoins(25);
+                    engine.getCreature().decreaseCoins(25);
                 }
                 break;
         }

@@ -1,0 +1,4 @@
+package com.example.softwaredesign;
+
+public abstract class Screen {
+}

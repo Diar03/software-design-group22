@@ -5,6 +5,16 @@ public class Engine {
     private Creature creature;
     private Environment environment;
 
+    public Screen getScreenController() {
+        return screenController;
+    }
+
+    public void setScreenController(Screen screenController) {
+        this.screenController = screenController;
+    }
+
+    private Screen screenController;
+
     public Creature getCreature() {
         return creature;
     }

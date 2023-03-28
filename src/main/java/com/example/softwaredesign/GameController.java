@@ -10,7 +10,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Popup;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -19,7 +18,7 @@ import java.util.ResourceBundle;
 
 import javafx.scene.Node;
 
-public class GameController implements Initializable {
+public class GameController extends Screen implements Initializable {
     private Stage stage;
     private Scene scene;
     private Parent root;
@@ -229,6 +228,12 @@ public class GameController implements Initializable {
         environmentView.setImage(main.getEngine().getEnvironment().getDaySprite());
         creatureView.setImage(main.getEngine().getCreature().getSprite());
     }
+
+    public void setVampireBurning(){
+        creatureView.setImage(((Vampire)main.getEngine().getCreature()).getBurningSprite());
+
+    }
+
     public void eatButton(){
         Food choice = eatChoiceBox.getValue();
         if(choice == null){
@@ -281,15 +286,21 @@ public class GameController implements Initializable {
     }
 
     public void fly(ActionEvent event) {
-        creatureView.setImage(((Bird)main.getEngine().getCreature()).getFlyingSprite());
-        creatureView.setLayoutY(160);
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+        Engine temp = Engine.getInstance();
+
+        if( ((Bird) temp.getCreature()).fly() ){
+            creatureView.setImage(((Bird)temp.getCreature()).getFlyingSprite());
+            creatureView.setLayoutY(160);
+        }else{
+            stopFlight();
         }
+
+    }
+
+    public void stopFlight(){
+        Engine temp = Engine.getInstance();
+        creatureView.setImage(temp.getCreature().getSprite());
         creatureView.setLayoutY(260);
-        creatureView.setImage(main.getEngine().getCreature().getSprite());
     }
 
     public Stage getStage() {
