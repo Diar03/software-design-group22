@@ -258,7 +258,7 @@ public class GameController extends Screen implements Initializable {
         if (engine.getCreature().sleep()) {
             updateBars();
             updateTime();
-            Alert alert = new Alert(Alert.AlertType.WARNING);
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setContentText("The " + engine.getCreature().getName() + " slept, the vitals have been increased");
             alert.showAndWait();
         }
