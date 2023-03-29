@@ -16,6 +16,7 @@ public class Main extends Application {
         Parent root;
         // Create engine instance
         Engine engine = Engine.getInstance();
+        engine.setStage(stage);
 
         // Load the initial scene
         FXMLLoader loader = new FXMLLoader(Main.class.getResource("scene1.fxml"));

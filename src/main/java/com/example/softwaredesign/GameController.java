@@ -52,7 +52,7 @@ public class GameController extends Screen implements Initializable {
     @FXML
     private AnchorPane pane;
 
-    private Food[] shopItems = {Food.MEAT, Food.SALAD};
+    private final Food[] shopItems = {Food.MEAT, Food.SALAD};
 
     private static final String STYLE_STR = "-fx-background-color: White; -fx-background-radius: 5px; -fx-label-padding: 0  2px;";
 
@@ -231,7 +231,6 @@ public class GameController extends Screen implements Initializable {
 
     public void setVampireBurning(){
         creatureView.setImage(((Vampire)engine.getCreature()).getBurningSprite());
-
     }
 
     public void eatButton(){
@@ -268,7 +267,7 @@ public class GameController extends Screen implements Initializable {
     public void shapeshift(ActionEvent event) {
         if (((Alien)engine.getCreature()).changeShape()) {
             if (creatureView.getImage().equals(((Alien)engine.getCreature()).getShapeshiftSprite())) {
-                creatureView.setImage(((Alien)engine.getCreature()).getSprite());
+                creatureView.setImage(engine.getCreature().getSprite());
             }
             else {
                 creatureView.setImage(((Alien)engine.getCreature()).getShapeshiftSprite());

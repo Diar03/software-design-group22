@@ -1,5 +1,6 @@
 package com.example.softwaredesign;
 
+import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
@@ -11,8 +12,18 @@ import java.util.concurrent.TimeUnit;
 public class Engine {
     private Creature creature;
 
+    private static Stage stage;
     ScheduledExecutorService executor;
     private Environment environment;
+    private Screen screenController;
+
+    public Stage getStage() {
+        return stage;
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
 
     public Screen getScreenController() {
         return screenController;
@@ -21,9 +32,6 @@ public class Engine {
     public void setScreenController(Screen screenController) {
         this.screenController = screenController;
     }
-
-    private Screen screenController;
-
     public Creature getCreature() {
         return creature;
     }
@@ -52,7 +60,9 @@ public class Engine {
     public void initSchedulers(GameController controller){
         executor = Executors.newScheduledThreadPool(2);
         Runnable vitalUpdater = () -> {
-            getCreature().update();
+            if(!getCreature().update()){
+                Platform.runLater(() -> resetGame()); // wrapped in Platform#runLater
+            }
             controller.updateBars();
 
         };
@@ -103,6 +113,16 @@ public class Engine {
     }
 
 
+    public void resetGame(){
+
+        executor.shutdownNow();
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Game over!");
+        alert.setHeaderText("Game over!");
+        alert.setContentText("Your creature has died");
+        alert.show();
+        getStage().close();
+    }
     public void exitGame(Stage stage){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Exiting the game!!! ");

@@ -122,10 +122,10 @@ public abstract class Creature {
         }
 
         if(Boolean.TRUE.equals(isHungry)){
-            hunger.decreaseVital(1);
-            health.decreaseVital(1);
+            hunger.decreaseVital(10);
+            health.decreaseVital(50);
         }else{
-            hunger.decreaseVital(2);
+            hunger.decreaseVital(50);
         }
 
         return (health.getPercentageLevel() > 0);
