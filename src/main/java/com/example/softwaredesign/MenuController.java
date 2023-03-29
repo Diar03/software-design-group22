@@ -51,7 +51,10 @@ public class MenuController extends Screen{
                     break;
             }
 
-            engine.setCreature(Creature.getInstance(creatureSelected,engine.getEnvironment()));
+            Creature creature = CreatureFactory.getCreature(creatureSelected, engine.getEnvironment());
+            if(creature != null){
+                engine.setCreature(creature);
+            }
 
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("gameScreen.fxml"));
             Parent root = loader.load();

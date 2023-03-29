@@ -22,29 +22,6 @@ public abstract class Creature {
      private Vital health;
      private Map<Food, Integer> inventory;
 
-     private static Creature instance = null;
-     Creature(){}
-
-    public static Creature getInstance(String chosenCreature,Environment env){
-         if (instance == null){
-             switch (chosenCreature){
-                 case "Bird":
-                     instance = new Bird(env);
-                     break;
-                 case "Vampire":
-                     instance = new Vampire(env);
-                     break;
-                 case "Alien":
-                     instance = new Alien(env);
-                     break;
-                 default:
-                     // Add other creatures here in a separate case statement
-                     break;
-             }
-         }
-         return instance;
-     }
-
     public int getCoins() {
         return this.coins;
     }
@@ -122,10 +99,10 @@ public abstract class Creature {
         }
 
         if(Boolean.TRUE.equals(isHungry)){
-            hunger.decreaseVital(10);
-            health.decreaseVital(50);
+            hunger.decreaseVital(2);
+            health.decreaseVital(2);
         }else{
-            hunger.decreaseVital(50);
+            hunger.decreaseVital(3);
         }
 
         return (health.getPercentageLevel() > 0);
@@ -184,7 +161,6 @@ class Bird extends Creature {
     private Image flyingSprite;
 
     public Bird(Environment env){
-        super();
         setSprite(new Image(getClass().getResourceAsStream("tweetyIdle.png")));
         setFlyingSprite(new Image(getClass().getResourceAsStream("ftweetyFlying.gif")));
         this.initVitals();
