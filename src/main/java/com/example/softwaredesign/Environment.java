@@ -26,7 +26,7 @@ class Environment{
                 nightSprite = new Image(getClass().getResourceAsStream("iceDark.png"));
                 break;
             default:
-                System.out.println("No such environment found");
+                // Add here the day and night sprites of any environments you add
                 break;
         }
         this.sunlightIntensity = sunlightIntensity;

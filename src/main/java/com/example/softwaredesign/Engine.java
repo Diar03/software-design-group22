@@ -1,10 +1,37 @@
 package com.example.softwaredesign;
 
-public class Engine {
-    private Initalizer initalizer;
-    private Creature creature;
-    private Environment environment;
+import javafx.application.Platform;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.stage.Stage;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+public class Engine {
+    private Creature creature;
+
+    private static Stage stage;
+    ScheduledExecutorService executor;
+    private Environment environment;
+    private Screen screenController;
+
+    public Stage getStage() {
+        return stage;
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+
+    public Screen getScreenController() {
+        return screenController;
+    }
+
+    public void setScreenController(Screen screenController) {
+        this.screenController = screenController;
+    }
     public Creature getCreature() {
         return creature;
     }
@@ -20,21 +47,9 @@ public class Engine {
     public void setEnvironment(Environment environment) {
         this.environment = environment;
     }
-
-    public Initalizer getInitalizer() {
-        return initalizer;
-    }
-
-    public void setInitalizer(Initalizer initalizer) {
-        this.initalizer = initalizer;
-    }
     private static Engine instance = null;
 
-    private Engine() {
-        initalizer = null;
-        environment = null;
-        creature = null;
-    }
+    private Engine() {}
     public static Engine getInstance(){
         if (instance == null){
             instance = new Engine();
@@ -42,7 +57,83 @@ public class Engine {
         return instance;
     }
 
-    static void displayMainScreen() {}
-    static void displayGameMenu() {}
-    static void handleDeath() {}
+    public void initSchedulers(GameController controller){
+        executor = Executors.newScheduledThreadPool(2);
+        Runnable vitalUpdater = () -> {
+            if(!getCreature().update()){
+                Platform.runLater(() -> resetGame()); // wrapped in Platform#runLater
+            }
+            controller.updateBars();
+
+        };
+        Runnable timeUpdater = () -> {
+            getEnvironment().setNextTimeOfDay();
+            creature.updateExtension();
+            controller.updateTime();
+        };
+        executor.scheduleAtFixedRate(vitalUpdater, 5, 3, TimeUnit.SECONDS);
+        executor.scheduleAtFixedRate(timeUpdater, 20, 20, TimeUnit.SECONDS);
+    }
+
+
+    public void buyFood(Food item){
+        switch (item){
+            case SALAD:
+                if(getCreature().getCoins() < 20){
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setContentText("Not enough coins to buy this item");
+                    alert.showAndWait();
+                    return;
+                }else{
+                    getCreature().decreaseCoins(20);
+                }
+                break;
+            case MEAT:
+                if(getCreature().getCoins() < 25){
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setContentText("Not enough coins to buy this item");
+                    alert.showAndWait();
+                    return;
+                }else{
+                    getCreature().decreaseCoins(25);
+                }
+                break;
+            default:
+                // Add here any foods from the shop
+                break;
+        }
+
+        Integer currentVal = getCreature().getInventory().get(item);
+        if(currentVal == null){
+            getCreature().getInventory().put(item, 1);
+        }else{
+            getCreature().getInventory().put(item, currentVal + 1);
+        }
+
+    }
+
+
+    public void resetGame(){
+
+        executor.shutdownNow();
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Game over!");
+        alert.setHeaderText("Game over!");
+        alert.setContentText("Your creature has died");
+        alert.show();
+        getStage().close();
+    }
+    public void exitGame(Stage stage){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Exiting the game!!! ");
+        alert.setHeaderText("*ALERT* Quitting Vivarium game");
+        alert.setContentText("Are you sure you want to quit “Vivarium” game??? ");
+
+        if(alert.showAndWait().get() == ButtonType.OK){
+            if(executor != null) {
+                executor.shutdown();
+            }
+            stage.close();
+        }
+    }
 }

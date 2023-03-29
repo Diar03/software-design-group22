@@ -7,18 +7,13 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class RiddleController implements Initializable {
-    private Main main;
-    private Parent root;
-    private Scene scene;
-    private Stage stage;
+public class RiddleController extends Screen implements Initializable {
     private int iterator = 0;
     @FXML
     private Label moneyStatus;
@@ -28,28 +23,26 @@ public class RiddleController implements Initializable {
     private TextField currentAnswer;
 
     public void goBackToMainScreen(ActionEvent event) throws IOException {
-        main.getEngine().getCreature().increaseCoins(riddle.getEarnedMoney());
-        main.getEngine().getCreature().getHealth().increaseVital(10);
-        main.getEngine().getCreature().getHunger().decreaseVital(5);
+        engine.getCreature().increaseCoins(riddle.getEarnedMoney());
+        engine.getCreature().getHealth().increaseVital(10);
+        engine.getCreature().getHunger().decreaseVital(5);
 
         FXMLLoader loader = new FXMLLoader(Main.class.getResource("gameScreen.fxml"));
-        root = loader.load();
+        Parent root = loader.load();
         GameController controller = loader.getController();
-        controller.setMain(main);
         controller.adaptScreenToCreature();
         controller.loadImages();
         controller.updateBars();
-        scene = new Scene(root);
-        stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(scene);
         stage.show();
-        main.initSchedulers(controller);
+        engine.initSchedulers(controller);
     }
     private Riddle riddle = new Riddle("Riddle");
     @Override
     public void initialize(URL arg0, ResourceBundle arg1){
         currentQuestion.setText(riddle.getQuestions()[iterator]);
-        System.out.println("RIDDLEE");
     }
     public void submit(ActionEvent event) throws IOException {
         if(currentAnswer.getText().equals(riddle.getAnswers()[iterator]) && iterator != 5){
@@ -77,9 +70,6 @@ public class RiddleController implements Initializable {
 
             goBackToMainScreen(event);
         }
-    }
-    public void setMain(Main theMainInstance){
-        this.main = theMainInstance;
     }
 }
 

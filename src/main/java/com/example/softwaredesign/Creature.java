@@ -15,14 +15,17 @@ public abstract class Creature {
 
      private Environment environment;
 
+     protected static final String HUNGER_STR = "Hunger";
+     protected static final String HEALTH_STR = "Health";
+
      private Vital hunger;
      private Vital health;
-     //Set<Vital> vitals;
      private Map<Food, Integer> inventory;
 
      private static Creature instance = null;
-     Creature(){};
-     public static Creature getInstance(String chosenCreature,Environment env){
+     Creature(){}
+
+    public static Creature getInstance(String chosenCreature,Environment env){
          if (instance == null){
              switch (chosenCreature){
                  case "Bird":
@@ -35,7 +38,7 @@ public abstract class Creature {
                      instance = new Alien(env);
                      break;
                  default:
-                     System.err.println("Invalid creature!!");
+                     // Add other creatures here in a separate case statement
                      break;
              }
          }
@@ -112,24 +115,23 @@ public abstract class Creature {
     abstract void initVitals();
 
     public boolean update(){
+        updateExtension();
         int currentHunger = hunger.getPercentageLevel();
         if(currentHunger < 20){
             isHungry = true;
         }
 
-        if(isHungry){
-            hunger.decreaseVital(2);
-            health.decreaseVital(2);
+        if(Boolean.TRUE.equals(isHungry)){
+            hunger.decreaseVital(10);
+            health.decreaseVital(50);
         }else{
-            hunger.decreaseVital(3);
+            hunger.decreaseVital(50);
         }
 
-        if(health.getPercentageLevel() <= 0){
-            return false;
-        }else{
-            return true;
-        }
+        return (health.getPercentageLevel() > 0);
     }
+
+    public abstract void updateExtension();
 
     public void eat(Food food){
 
@@ -155,6 +157,9 @@ public abstract class Creature {
             case SALAD:
                 hunger.increaseVital(25);
                 break;
+            default:
+                // Future foods can be added with further cases
+                break;
         }
 
         inventory.put(food, inventory.get(food) - 1);
@@ -163,7 +168,7 @@ public abstract class Creature {
         int currVal = getCoins();
         setCoins(currVal + value);
     }
-    void deccreaseCoins(int value) {
+    void decreaseCoins(int value) {
         int currVal = getCoins();
         setCoins(currVal - value);
     }
@@ -174,6 +179,8 @@ class Bird extends Creature {
 
     private Vital flight;
 
+    private boolean isFlying;
+
     private Image flyingSprite;
 
     public Bird(Environment env){
@@ -182,8 +189,9 @@ class Bird extends Creature {
         setFlyingSprite(new Image(getClass().getResourceAsStream("ftweetyFlying.gif")));
         this.initVitals();
         setHungry(false);
+        setFlying(false);
         setEnvironment(env);
-        setInventory( new HashMap<Food, Integer>());
+        setInventory( new HashMap<>());
         setName("Bird");
     }
 
@@ -203,31 +211,40 @@ class Bird extends Creature {
         this.flight = flight;
     }
 
+    public boolean isFlying() {
+        return isFlying;
+    }
+
+    public void setFlying(boolean flying) {
+        isFlying = flying;
+    }
+
     @Override
     void initVitals() {
         setFlight(new Vital(50, "Flight"));
-        setHunger(new Vital(50, "Hunger"));
-        setHealth(new Vital(50, "Health"));
+        setHunger(new Vital(50, HUNGER_STR));
+        setHealth(new Vital(50, HEALTH_STR));
+    }
+
+    @Override
+    public void updateExtension() {
+        if(isFlying()){
+            this.getFlight().decreaseVital(20);
+            this.getHealth().increaseVital(5);
+            this.getHunger().increaseVital(5);
+        }
+        if(this.getFlight().getPercentageLevel() <= 0){
+            ((GameController) Engine.getInstance().getScreenController()).stopFlight();
+            setFlying(false);
+        }
     }
 
     @Override
     public boolean sleep() {
         if(getEnvironment().getTimeOfDay() == Time.NIGHT) {
-            if((flight.getPercentageLevel() + 20) > 100){
-                flight.increaseVital(100 - flight.getPercentageLevel());
-            }else{
-                flight.increaseVital(20);
-            }
-            if((getHunger().getPercentageLevel() + 20) > 100){
-                getHunger().increaseVital(100 - getHunger().getPercentageLevel());
-            }else{
-                getHunger().increaseVital(20);
-            }
-            if((getHealth().getPercentageLevel() + 20) > 100){
-                getHealth().increaseVital(100 - getHealth().getPercentageLevel());
-            }else{
-                getHealth().increaseVital(20);
-            }
+            flight.increaseVital(20);
+            getHunger().increaseVital(20);
+            getHealth().increaseVital(20);
             getEnvironment().setNextTimeOfDay();
             return true;
         }
@@ -240,12 +257,18 @@ class Bird extends Creature {
     }
 
     public boolean fly(){
+        if(isFlying()){
+            setFlying(false);
+            return false;
+        }
         if(this.getFlight().getPercentageLevel() <= 0){
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setContentText("You do not have any flight left...");
             alert.showAndWait();
+            setFlying(false);
             return false;
         }else{
+            setFlying(true);
             return true;
         }
 
@@ -264,7 +287,7 @@ class Vampire extends Creature {
         setHungry(false);
         setBurning(false);
         setEnvironment(env);
-        setInventory(new HashMap<Food, Integer>());
+        setInventory(new HashMap<>());
         setName("Vampire");
     }
 
@@ -295,8 +318,8 @@ class Vampire extends Creature {
     @Override
     void initVitals() {
         setPhotosensitivity(new Vital(50, "Photosensitivity"));
-        setHunger(new Vital(50, "Hunger"));
-        setHealth(new Vital(50, "Health"));
+        setHunger(new Vital(50, HUNGER_STR));
+        setHealth(new Vital(50, HEALTH_STR));
     }
 
     @Override
@@ -329,40 +352,21 @@ class Vampire extends Creature {
     }
 
     @Override
-    public boolean update() {
-
+    public void updateExtension() {
         if(getEnvironment().getTimeOfDay() == Time.DAY){
             int currentIntensity = getEnvironment().getSunlightIntensity();
             photosensitivity.decreaseVital(currentIntensity);
+        }else{
+            photosensitivity.increaseVital(10);
         }
-
-        if(getHunger().getPercentageLevel() < 20){
-            setHungry(true);
-        }
-
 
         if(photosensitivity.getPercentageLevel() < 20){
-            isBurning = true;
-        }
-
-
-        if(getHungry()){
-            getHunger().decreaseVital(2);
-            getHealth().decreaseVital(2);
+            ((GameController) Engine.getInstance().getScreenController()).startBurning();
+            setBurning(true);
         }else{
-            getHunger().decreaseVital(3);
+            ((GameController) Engine.getInstance().getScreenController()).stopBurning();
+            setBurning(false);
         }
-
-        if(getBurning()){
-            getHealth().decreaseVital(5);
-        }
-
-        if(getHealth().getPercentageLevel() <= 0){
-            return false;
-        }else{
-            return true;
-        }
-
     }
 }
 
@@ -375,7 +379,7 @@ class Alien extends Creature {
         initVitals();
         setHungry(false);
         setEnvironment(env);
-        setInventory(new HashMap<Food, Integer>());
+        setInventory(new HashMap<>());
         setName("Alien");
     }
 
@@ -390,9 +394,12 @@ class Alien extends Creature {
     @Override
     void initVitals() {
         setShapeshift(new Vital(50, "Shapeshift"));
-        setHunger(new Vital(50, "Hunger"));
-        setHealth(new Vital(50, "Health"));
+        setHunger(new Vital(50, HUNGER_STR));
+        setHealth(new Vital(50, HEALTH_STR));
     }
+
+    @Override
+    public void updateExtension() {/* No additional functionality needed for alien in update */}
 
     @Override
     boolean sleep() {
