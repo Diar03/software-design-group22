@@ -19,13 +19,11 @@ import java.util.ResourceBundle;
 import javafx.scene.Node;
 
 public class GameController extends Screen implements Initializable {
-    private Stage stage;
-    private Scene scene;
     private Parent root;
     @FXML
     private ComboBox<String> games;
 
-    private String[] gamesArray = {"Riddle"};
+    private final String[] gamesArray = {"Riddle"};
     @FXML
     private ImageView environmentView;
 
@@ -85,10 +83,10 @@ public class GameController extends Screen implements Initializable {
         try {
             root = loader.load();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            // Throw error
         }
-        scene = new Scene(root);
-            stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
             stage.show();
 
@@ -174,7 +172,7 @@ public class GameController extends Screen implements Initializable {
                 displayCurrCoin();
                 break;
             default:
-                // If your creature needs a specific bar/button, add it here to the pane
+                // If your creature needs a specific bar/button, add a case statement here to the pane
                 break;
         }
     }
