@@ -22,7 +22,6 @@ public class GameController extends Screen implements Initializable {
     private Stage stage;
     private Scene scene;
     private Parent root;
-    private Main main;
     @FXML
     private ComboBox<String> games;
 
@@ -49,14 +48,6 @@ public class GameController extends Screen implements Initializable {
 
     private ProgressBar shapeshiftBar;
 
-    private Button flyButton;
-
-    private Button shapeshiftButton;
-
-    private Label flightLabel;
-    private Label photosensitivtyLabel;
-    private Label shapeshiftLabel;
-
     @FXML
     private ChoiceBox<Food> eatChoiceBox;
 
@@ -65,16 +56,18 @@ public class GameController extends Screen implements Initializable {
 
     private Food[] shopItems = {Food.MEAT, Food.SALAD};
 
+    private static final String STYLE_STR = "-fx-background-color: White; -fx-background-radius: 5px; -fx-label-padding: 0  2px;";
+
     public void displayCurrCoin(){
-        currCoin.setText(""+main.getEngine().getCreature().getCoins());
+        currCoin.setText(""+engine.getCreature().getCoins());
     }
 
     public void displayInventory(){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText("INVENTORY");
         alert.setContentText("You have now... \n"+
-                "Meat:  " + main.getEngine().getCreature().getInventory().get(Food.MEAT) + "\n" +
-                "Salad:  " + main.getEngine().getCreature().getInventory().get(Food.SALAD) + "\n");
+                "Meat:  " + engine.getCreature().getInventory().get(Food.MEAT) + "\n" +
+                "Salad:  " + engine.getCreature().getInventory().get(Food.SALAD) + "\n");
         alert.show();
     }
     @Override
@@ -87,27 +80,24 @@ public class GameController extends Screen implements Initializable {
         healthBar.setStyle("-fx-accent: red;");
     }
     EventHandler<ActionEvent> onItemSelected = event -> {
-        System.out.println("Hello");
-        try {
-            main.executor.shutdownNow();
+            Engine.getInstance().executor.shutdownNow();
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("riddleGameScreen.fxml"));
+        try {
             root = loader.load();
-            RiddleController riddleController = loader.getController();
-            riddleController.setMain(main);
-            scene = new Scene(root);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        scene = new Scene(root);
             stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
             stage.setScene(scene);
             stage.show();
-        } catch(IOException e){
-            //throws IOException;
-        }
 
     };
 
     public void adaptScreenToCreature(){
-        switch (main.getEngine().getCreature().getName()){
+        switch (engine.getCreature().getName()){
             case "Bird":
-                flyButton = new Button("Fly");
+                Button flyButton = new Button("Fly");
                 flyButton.setLayoutX(14);
                 flyButton.setLayoutY(394);
                 flyButton.setPrefHeight(32.0);
@@ -122,11 +112,11 @@ public class GameController extends Screen implements Initializable {
                 flightBar.setStyle("-fx-accent: blue;");
                 flightBar.setProgress(0.5);
 
-                flightLabel = new Label();
+                Label flightLabel = new Label();
                 flightLabel.setLayoutX(527);
                 flightLabel.setLayoutY(75);
                 flightLabel.setText(" Flight ");
-                flightLabel.setStyle("-fx-background-color: White; -fx-background-radius: 5px; -fx-label-padding: 0  2px;");
+                flightLabel.setStyle(STYLE_STR);
 
                 pane.getChildren().add(flyButton);
                 pane.getChildren().add(flightBar);
@@ -144,25 +134,23 @@ public class GameController extends Screen implements Initializable {
                 photosensitivityBar.setProgress(0.5);
 
 
-                photosensitivtyLabel = new Label();
+                Label photosensitivtyLabel = new Label();
                 photosensitivtyLabel.setLayoutX(500);
                 photosensitivtyLabel.setLayoutY(75);
                 photosensitivtyLabel.setText(" Photosensitivity ");
-                photosensitivtyLabel.setStyle("-fx-background-color: White; -fx-background-radius: 5px; -fx-label-padding: 0  2px;");
+                photosensitivtyLabel.setStyle(STYLE_STR);
 
                 pane.getChildren().add(photosensitivityBar);
                 pane.getChildren().add(photosensitivtyLabel);
                 displayCurrCoin();
                 break;
             case "Alien":
-                shapeshiftButton = new Button("Shapeshift");
+                Button shapeshiftButton = new Button("Shapeshift");
                 shapeshiftButton.setLayoutX(14);
                 shapeshiftButton.setLayoutY(394);
                 shapeshiftButton.setPrefHeight(32.0);
                 shapeshiftButton.setPrefWidth(74.0);
-                shapeshiftButton.setOnAction(event -> {
-                    ((Alien)main.getEngine().getCreature()).changeShape();
-                });
+                shapeshiftButton.setOnAction(event -> ((Alien)engine.getCreature()).changeShape());
 
                 shapeshiftBar = new ProgressBar();
                 shapeshiftBar.setLayoutX(468.0);
@@ -174,21 +162,24 @@ public class GameController extends Screen implements Initializable {
                 pane.getChildren().add(shapeshiftButton);
                 shapeshiftButton.setOnAction(this::shapeshift);
 
-                shapeshiftLabel = new Label();
+                Label shapeshiftLabel = new Label();
                 shapeshiftLabel.setLayoutX(510);
                 shapeshiftLabel.setLayoutY(75);
                 shapeshiftLabel.setText(" Shape-shift ");
-                shapeshiftLabel.setStyle("-fx-background-color: White; -fx-background-radius: 5px; -fx-label-padding: 0  2px;");
+                shapeshiftLabel.setStyle(STYLE_STR);
 
 
                 pane.getChildren().add(shapeshiftBar);
                 pane.getChildren().add(shapeshiftLabel);
                 displayCurrCoin();
                 break;
+            default:
+                // If your creature needs a specific bar/button, add it here to the pane
+                break;
         }
     }
 
-    public void buyFood(ActionEvent event){
+    public void buyFood(){
         Food choice = shop.getValue();
         if(choice == null){
             Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -197,40 +188,51 @@ public class GameController extends Screen implements Initializable {
             return;
         }
 
-        main.buyFood(choice);
+        engine.buyFood(choice);
         displayCurrCoin();
         displayInventory();
 
     }
 
+    public void startBurning(){
+        creatureView.setImage(((Vampire)engine.getCreature()).getBurningSprite());
+    }
+    public void stopBurning(){
+        creatureView.setImage(engine.getCreature().getSprite());
+    }
+
     public void updateBars(){
-        double curHealth = main.getEngine().getCreature().getHealth().getPercentageLevel()/100.0;
-        double curHunger = main.getEngine().getCreature().getHunger().getPercentageLevel()/100.0;
+        double curHealth = engine.getCreature().getHealth().getPercentageLevel()/100.0;
+        double curHunger = engine.getCreature().getHunger().getPercentageLevel()/100.0;
         healthBar.setProgress(curHealth);
         hungerBar.setProgress(curHunger);
-        switch (main.getEngine().getCreature().getName()){
+        switch (engine.getCreature().getName()){
             case "Alien":
-                double curShapeshift = ((Alien)main.getEngine().getCreature()).getShapeshift().getPercentageLevel()/100.0;
+                double curShapeshift = ((Alien)engine.getCreature()).getShapeshift().getPercentageLevel()/100.0;
                 shapeshiftBar.setProgress(curShapeshift);
                 break;
             case "Bird":
-                double curFlight = ((Bird)main.getEngine().getCreature()).getFlight().getPercentageLevel()/100.0;
+                double curFlight = ((Bird)engine.getCreature()).getFlight().getPercentageLevel()/100.0;
                 flightBar.setProgress(curFlight);
+
                 break;
             case "Vampire":
-                double curPhotosensitivity = ((Vampire)main.getEngine().getCreature()).getPhotosensitivity().getPercentageLevel()/100.0;
+                double curPhotosensitivity = ((Vampire)engine.getCreature()).getPhotosensitivity().getPercentageLevel()/100.0;
                 photosensitivityBar.setProgress(curPhotosensitivity);
+                break;
+            default:
+                // If a new creature uses a bar, update the bar/s associated to it here
                 break;
         }
     }
 
     public void loadImages(){
-        environmentView.setImage(main.getEngine().getEnvironment().getDaySprite());
-        creatureView.setImage(main.getEngine().getCreature().getSprite());
+        environmentView.setImage(engine.getEnvironment().getDaySprite());
+        creatureView.setImage(engine.getCreature().getSprite());
     }
 
     public void setVampireBurning(){
-        creatureView.setImage(((Vampire)main.getEngine().getCreature()).getBurningSprite());
+        creatureView.setImage(((Vampire)engine.getCreature()).getBurningSprite());
 
     }
 
@@ -242,12 +244,12 @@ public class GameController extends Screen implements Initializable {
             alert.showAndWait();
             return;
         }
-        main.getEngine().getCreature().eat(choice);
+        engine.getCreature().eat(choice);
         updateBars();
         displayInventory();
     }
     public void updateTime(){
-        Environment curEnv = main.getEngine().getEnvironment();
+        Environment curEnv = engine.getEnvironment();
         if(curEnv.getTimeOfDay().equals(Time.DAY)){
             environmentView.setImage(curEnv.getDaySprite());
         }else{
@@ -256,31 +258,28 @@ public class GameController extends Screen implements Initializable {
     }
 
     public void sleep(){
-        if (main.getEngine().getCreature().sleep()) {
+        if (engine.getCreature().sleep()) {
             updateBars();
             updateTime();
             Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setContentText("The " + main.getEngine().getCreature().getName() + " slept, the vitals have been increased");
+            alert.setContentText("The " + engine.getCreature().getName() + " slept, the vitals have been increased");
             alert.showAndWait();
         }
-        System.out.println("Sleeping");
     }
 
     public void shapeshift(ActionEvent event) {
-        if (((Alien)main.getEngine().getCreature()).changeShape()) {
-            if (creatureView.getImage().equals(((Alien)main.getEngine().getCreature()).getShapeshiftSprite())) {
-                creatureView.setImage(((Alien)main.getEngine().getCreature()).getSprite());
+        if (((Alien)engine.getCreature()).changeShape()) {
+            if (creatureView.getImage().equals(((Alien)engine.getCreature()).getShapeshiftSprite())) {
+                creatureView.setImage(((Alien)engine.getCreature()).getSprite());
             }
             else {
-                creatureView.setImage(((Alien)main.getEngine().getCreature()).getShapeshiftSprite());
+                creatureView.setImage(((Alien)engine.getCreature()).getShapeshiftSprite());
             }
             updateBars();
-            // creatureView.setImage(((Alien)main.getEngine().getCreature()).getShapeshiftSprite());
-            System.out.println("SHAPESHIFT");
         }
         else {
             Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setContentText("The " + main.getEngine().getCreature().getName() + " cannot shapeshift anymore");
+            alert.setContentText("The " + engine.getCreature().getName() + " cannot shapeshift anymore");
             alert.showAndWait();
         }
     }
@@ -303,11 +302,4 @@ public class GameController extends Screen implements Initializable {
         creatureView.setLayoutY(260);
     }
 
-    public Stage getStage() {
-        return stage;
-    }
-
-    public void setMain(Main theMainInstance){
-        this.main = theMainInstance;
-    }
 }

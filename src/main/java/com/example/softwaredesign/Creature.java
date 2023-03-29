@@ -15,14 +15,17 @@ public abstract class Creature {
 
      private Environment environment;
 
+     protected static final String HUNGER_STR = "Hunger";
+     protected static final String HEALTH_STR = "Health";
+
      private Vital hunger;
      private Vital health;
-     //Set<Vital> vitals;
      private Map<Food, Integer> inventory;
 
      private static Creature instance = null;
-     Creature(){};
-     public static Creature getInstance(String chosenCreature,Environment env){
+     Creature(){}
+
+    public static Creature getInstance(String chosenCreature,Environment env){
          if (instance == null){
              switch (chosenCreature){
                  case "Bird":
@@ -35,7 +38,7 @@ public abstract class Creature {
                      instance = new Alien(env);
                      break;
                  default:
-                     System.err.println("Invalid creature!!");
+                     // Add other creatures here in a separate case statement
                      break;
              }
          }
@@ -118,18 +121,14 @@ public abstract class Creature {
             isHungry = true;
         }
 
-        if(isHungry){
-            hunger.decreaseVital(2);
-            health.decreaseVital(2);
+        if(Boolean.TRUE.equals(isHungry)){
+            hunger.decreaseVital(1);
+            health.decreaseVital(1);
         }else{
-            hunger.decreaseVital(3);
+            hunger.decreaseVital(2);
         }
 
-        if(health.getPercentageLevel() <= 0){
-            return false;
-        }else{
-            return true;
-        }
+        return (health.getPercentageLevel() > 0);
     }
 
     public abstract void updateExtension();
@@ -157,6 +156,9 @@ public abstract class Creature {
                 break;
             case SALAD:
                 hunger.increaseVital(25);
+                break;
+            default:
+                // Future foods can be added with further cases
                 break;
         }
 
@@ -189,7 +191,7 @@ class Bird extends Creature {
         setHungry(false);
         setFlying(false);
         setEnvironment(env);
-        setInventory( new HashMap<Food, Integer>());
+        setInventory( new HashMap<>());
         setName("Bird");
     }
 
@@ -220,8 +222,8 @@ class Bird extends Creature {
     @Override
     void initVitals() {
         setFlight(new Vital(50, "Flight"));
-        setHunger(new Vital(50, "Hunger"));
-        setHealth(new Vital(50, "Health"));
+        setHunger(new Vital(50, HUNGER_STR));
+        setHealth(new Vital(50, HEALTH_STR));
     }
 
     @Override
@@ -285,7 +287,7 @@ class Vampire extends Creature {
         setHungry(false);
         setBurning(false);
         setEnvironment(env);
-        setInventory(new HashMap<Food, Integer>());
+        setInventory(new HashMap<>());
         setName("Vampire");
     }
 
@@ -316,8 +318,8 @@ class Vampire extends Creature {
     @Override
     void initVitals() {
         setPhotosensitivity(new Vital(50, "Photosensitivity"));
-        setHunger(new Vital(50, "Hunger"));
-        setHealth(new Vital(50, "Health"));
+        setHunger(new Vital(50, HUNGER_STR));
+        setHealth(new Vital(50, HEALTH_STR));
     }
 
     @Override
@@ -354,10 +356,16 @@ class Vampire extends Creature {
         if(getEnvironment().getTimeOfDay() == Time.DAY){
             int currentIntensity = getEnvironment().getSunlightIntensity();
             photosensitivity.decreaseVital(currentIntensity);
+        }else{
+            photosensitivity.increaseVital(10);
         }
 
         if(photosensitivity.getPercentageLevel() < 20){
+            ((GameController) Engine.getInstance().getScreenController()).startBurning();
             setBurning(true);
+        }else{
+            ((GameController) Engine.getInstance().getScreenController()).stopBurning();
+            setBurning(false);
         }
     }
 }
@@ -371,7 +379,7 @@ class Alien extends Creature {
         initVitals();
         setHungry(false);
         setEnvironment(env);
-        setInventory(new HashMap<Food, Integer>());
+        setInventory(new HashMap<>());
         setName("Alien");
     }
 
@@ -386,8 +394,8 @@ class Alien extends Creature {
     @Override
     void initVitals() {
         setShapeshift(new Vital(50, "Shapeshift"));
-        setHunger(new Vital(50, "Hunger"));
-        setHealth(new Vital(50, "Health"));
+        setHunger(new Vital(50, HUNGER_STR));
+        setHealth(new Vital(50, HEALTH_STR));
     }
 
     @Override
