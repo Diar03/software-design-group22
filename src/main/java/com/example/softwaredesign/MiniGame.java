@@ -1,7 +1,6 @@
 package com.example.softwaredesign;
 
 public abstract class MiniGame {
-    private String name;
     private int earnedMoney = 0;
 
     public int getEarnedMoney() {
@@ -12,8 +11,6 @@ public abstract class MiniGame {
         this.earnedMoney += 10;
     }
 
-    public MiniGame(String miniGameName){
-        this.name = miniGameName;
-    }
+    protected MiniGame(String miniGameName){}
 }
 

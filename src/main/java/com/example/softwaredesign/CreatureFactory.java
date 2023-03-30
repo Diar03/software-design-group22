@@ -1,6 +1,10 @@
 package com.example.softwaredesign;
 
 public class CreatureFactory {
+
+    private CreatureFactory() {
+        throw new IllegalStateException("Utility class");
+    }
     public static Creature getCreature(String chosenCreature,Environment env){
             switch (chosenCreature){
                 case "Bird":

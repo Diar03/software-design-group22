@@ -1,12 +1,6 @@
 package com.example.softwaredesign;
 
-import javafx.event.ActionEvent;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 
@@ -34,7 +28,7 @@ public class MenuController extends Screen{
         creatureSelected = "Alien";
     }
 
-    public void startTheGame(ActionEvent e) throws IOException {
+    public void startTheGame() throws IOException {
         if (environmentSelected != null && creatureSelected != null) {
             switch (environmentSelected){
                 case "Forest":
@@ -55,19 +49,7 @@ public class MenuController extends Screen{
             if(creature != null){
                 engine.setCreature(creature);
             }
-
-            FXMLLoader loader = new FXMLLoader(Main.class.getResource("gameScreen.fxml"));
-            Parent root = loader.load();
-            GameController controller = loader.getController();
-            Engine.getInstance().setScreenController(controller);
-            controller.adaptScreenToCreature();
-            controller.loadImages();
-
-            engine.setStage( (Stage) ((Node) e.getSource()).getScene().getWindow());
-            Scene scene = new Scene(root);
-            engine.getStage().setScene(scene);
-            engine.getStage().show();
-            engine.initSchedulers(controller);
+            displayGameScreen();
 
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Please select an environment and a creature.");

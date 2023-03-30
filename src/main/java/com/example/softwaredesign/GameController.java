@@ -3,23 +3,16 @@ package com.example.softwaredesign;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import javafx.scene.Node;
-
 public class GameController extends Screen implements Initializable {
-    private Parent root;
     @FXML
     private ComboBox<String> games;
 
@@ -56,6 +49,10 @@ public class GameController extends Screen implements Initializable {
 
     private static final String STYLE_STR = "-fx-background-color: White; -fx-background-radius: 5px; -fx-label-padding: 0  2px;";
 
+    public ImageView getCreatureView() {
+        return creatureView;
+    }
+
     public void displayCurrCoin(){
         currCoin.setText(""+engine.getCreature().getCoins());
     }
@@ -78,17 +75,12 @@ public class GameController extends Screen implements Initializable {
         healthBar.setStyle("-fx-accent: red;");
     }
     EventHandler<ActionEvent> onItemSelected = event -> {
-            Engine.getInstance().executor.shutdownNow();
-            FXMLLoader loader = new FXMLLoader(Main.class.getResource("riddleGameScreen.fxml"));
+        Engine.getInstance().executor.shutdownNow();
         try {
-            root = loader.load();
+            displayRiddle();
         } catch (IOException e) {
-            // Throw error
+            // IO exception occurrence unlikely
         }
-        Scene scene = new Scene(root);
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(scene);
-            stage.show();
 
     };
 
@@ -192,13 +184,6 @@ public class GameController extends Screen implements Initializable {
 
     }
 
-    public void startBurning(){
-        creatureView.setImage(((Vampire)engine.getCreature()).getBurningSprite());
-    }
-    public void stopBurning(){
-        creatureView.setImage(engine.getCreature().getSprite());
-    }
-
     public void updateBars(){
         double curHealth = engine.getCreature().getHealth().getPercentageLevel()/100.0;
         double curHunger = engine.getCreature().getHunger().getPercentageLevel()/100.0;
@@ -227,10 +212,6 @@ public class GameController extends Screen implements Initializable {
     public void loadImages(){
         environmentView.setImage(engine.getEnvironment().getDaySprite());
         creatureView.setImage(engine.getCreature().getSprite());
-    }
-
-    public void setVampireBurning(){
-        creatureView.setImage(((Vampire)engine.getCreature()).getBurningSprite());
     }
 
     public void eatButton(){
@@ -288,15 +269,9 @@ public class GameController extends Screen implements Initializable {
             creatureView.setImage(((Bird)temp.getCreature()).getFlyingSprite());
             creatureView.setLayoutY(160);
         }else{
-            stopFlight();
+            Screen.stopFlight();
         }
 
-    }
-
-    public void stopFlight(){
-        Engine temp = Engine.getInstance();
-        creatureView.setImage(temp.getCreature().getSprite());
-        creatureView.setLayoutY(260);
     }
 
 }

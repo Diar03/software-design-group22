@@ -210,7 +210,7 @@ class Bird extends Creature {
             this.getHunger().increaseVital(5);
         }
         if(this.getFlight().getPercentageLevel() <= 0){
-            ((GameController) Engine.getInstance().getScreenController()).stopFlight();
+            Screen.stopFlight();
             setFlying(false);
         }
     }
@@ -337,10 +337,10 @@ class Vampire extends Creature {
         }
 
         if(photosensitivity.getPercentageLevel() < 20){
-            ((GameController) Engine.getInstance().getScreenController()).startBurning();
+            Screen.startBurning();
             setBurning(true);
         }else{
-            ((GameController) Engine.getInstance().getScreenController()).stopBurning();
+            Screen.stopBurning();
             setBurning(false);
         }
     }

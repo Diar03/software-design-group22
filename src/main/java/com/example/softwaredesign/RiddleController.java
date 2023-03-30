@@ -1,13 +1,7 @@
 package com.example.softwaredesign;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
@@ -22,29 +16,18 @@ public class RiddleController extends Screen implements Initializable {
     @FXML
     private TextField currentAnswer;
 
-    public void goBackToMainScreen(ActionEvent event) throws IOException {
+    public void goBackToMainScreen() throws IOException {
         engine.getCreature().increaseCoins(riddle.getEarnedMoney());
         engine.getCreature().getHealth().increaseVital(10);
         engine.getCreature().getHunger().decreaseVital(5);
-
-        FXMLLoader loader = new FXMLLoader(Main.class.getResource("gameScreen.fxml"));
-        Parent root = loader.load();
-        GameController controller = loader.getController();
-        controller.adaptScreenToCreature();
-        controller.loadImages();
-        controller.updateBars();
-        Scene scene = new Scene(root);
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setScene(scene);
-        stage.show();
-        engine.initSchedulers(controller);
+        displayGameScreen();
     }
     private Riddle riddle = new Riddle("Riddle");
     @Override
     public void initialize(URL arg0, ResourceBundle arg1){
         currentQuestion.setText(riddle.getQuestions()[iterator]);
     }
-    public void submit(ActionEvent event) throws IOException {
+    public void submit() throws IOException {
         if(currentAnswer.getText().equals(riddle.getAnswers()[iterator]) && iterator != 5){
             riddle.increaseEarnedMoney();
             iterator++;
@@ -56,7 +39,7 @@ public class RiddleController extends Screen implements Initializable {
                         "Health increased: +10\n" +
                         "Hunger decreased: -5");
                 alert.show();
-                goBackToMainScreen(event);
+                goBackToMainScreen();
             }else{
                 currentQuestion.setText(riddle.getQuestions()[iterator]);
             }
@@ -68,7 +51,7 @@ public class RiddleController extends Screen implements Initializable {
                     "Hunger decreased: -5");
             alert.show();
 
-            goBackToMainScreen(event);
+            goBackToMainScreen();
         }
     }
 }
