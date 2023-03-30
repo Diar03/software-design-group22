@@ -8,10 +8,12 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public abstract class Screen {
-    static Stage stage;
-    static Scene scene;
-    static Parent root;
+     private static Stage stage;
+     private static Scene scene;
+     private static Parent root;
 
+    protected Screen() {
+    }
     static GameController gameController;
     protected static Engine engine = Engine.getInstance();
 
