@@ -76,12 +76,16 @@ public class GameController extends Screen implements Initializable {
     }
     EventHandler<ActionEvent> onItemSelected = event -> {
         Engine.getInstance().executor.shutdownNow();
-        try {
-            displayRiddle();
-        } catch (IOException e) {
-            // IO exception occurrence unlikely
+        String selectedGame = games.getValue();
+        if (selectedGame.equals("Riddle")) {
+            try {
+                displayRiddle();
+            } catch (IOException e) {
+                // IO exception occurrence unlikely
+            }
+        }else{
+            /// add new game
         }
-
     };
 
     public void adaptScreenToCreature(){

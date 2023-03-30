@@ -86,8 +86,6 @@ public abstract class Creature {
         this.inventory = inventory;
     }
 
-    static void playMiniGame() {}
-
     abstract boolean sleep();
     abstract void initVitals();
 
