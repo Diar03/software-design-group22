@@ -51,8 +51,8 @@ public class Engine {
             creature.updateExtension();
             controller.updateTime();
         };
-        executor.scheduleAtFixedRate(vitalUpdater, 5, 3, TimeUnit.SECONDS);
-        executor.scheduleAtFixedRate(timeUpdater, 20, 20, TimeUnit.SECONDS);
+        executor.scheduleAtFixedRate(vitalUpdater, 5, 1, TimeUnit.SECONDS);
+        executor.scheduleAtFixedRate(timeUpdater, 30, 30, TimeUnit.SECONDS);
     }
 
 

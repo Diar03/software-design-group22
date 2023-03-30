@@ -96,6 +96,8 @@ public abstract class Creature {
         int currentHunger = hunger.getPercentageLevel();
         if(currentHunger < 20){
             isHungry = true;
+        }else{
+            isHungry = false;
         }
 
         if(Boolean.TRUE.equals(isHungry)){
@@ -206,8 +208,8 @@ class Bird extends Creature {
     public void updateExtension() {
         if(isFlying()){
             this.getFlight().decreaseVital(20);
-            this.getHealth().increaseVital(5);
-            this.getHunger().increaseVital(5);
+            this.getHealth().increaseVital(10);
+            this.getHunger().increaseVital(10);
         }
         if(this.getFlight().getPercentageLevel() <= 0){
             Screen.stopFlight();
@@ -218,9 +220,9 @@ class Bird extends Creature {
     @Override
     public boolean sleep() {
         if(getEnvironment().getTimeOfDay() == Time.NIGHT) {
-            flight.increaseVital(20);
-            getHunger().increaseVital(20);
-            getHealth().increaseVital(20);
+            getFlight().increaseVital(50);
+            getHunger().increaseVital(30);
+            getHealth().increaseVital(30);
             getEnvironment().setNextTimeOfDay();
             return true;
         }
@@ -301,21 +303,9 @@ class Vampire extends Creature {
     @Override
     boolean sleep() {
         if(getEnvironment().getTimeOfDay() == Time.DAY) {
-            if((photosensitivity.getPercentageLevel() + 20) > 100){
-                photosensitivity.increaseVital(100 - photosensitivity.getPercentageLevel());
-            }else{
-                photosensitivity.increaseVital(20);
-            }
-            if((getHunger().getPercentageLevel() + 20) > 100){
-                getHunger().increaseVital(100 - getHunger().getPercentageLevel());
-            }else{
-                getHunger().increaseVital(20);
-            }
-            if((getHealth().getPercentageLevel() + 20) > 100){
-                getHealth().increaseVital(100 - getHealth().getPercentageLevel());
-            }else{
-                getHealth().increaseVital(20);
-            }
+            getPhotosensitivity().increaseVital(50);
+            getHunger().increaseVital(30);
+            getHealth().increaseVital(30);
             getEnvironment().setNextTimeOfDay();
             return true;
         }
@@ -342,6 +332,10 @@ class Vampire extends Creature {
         }else{
             Screen.stopBurning();
             setBurning(false);
+        }
+
+        if(getBurning()){
+            getHealth().decreaseVital(5);
         }
     }
 }
@@ -380,21 +374,9 @@ class Alien extends Creature {
     @Override
     boolean sleep() {
         if(getEnvironment().getTimeOfDay() == Time.NIGHT) {
-            if((shapeshift.getPercentageLevel() + 20) > 100){
-                shapeshift.increaseVital(100 - shapeshift.getPercentageLevel());
-            }else{
-                shapeshift.increaseVital(20);
-            }
-            if((getHunger().getPercentageLevel() + 20) > 100){
-                getHunger().increaseVital(100 - getHunger().getPercentageLevel());
-            }else{
-                getHunger().increaseVital(20);
-            }
-            if((getHealth().getPercentageLevel() + 20) > 100){
-                getHealth().increaseVital(100 - getHealth().getPercentageLevel());
-            }else{
-                getHealth().increaseVital(20);
-            }
+            getShapeshift().increaseVital(50);
+            getHunger().increaseVital(30);
+            getHealth().increaseVital(30);
             getEnvironment().setNextTimeOfDay();
             return true;
         }
