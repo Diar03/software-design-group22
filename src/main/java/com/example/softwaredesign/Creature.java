@@ -3,7 +3,7 @@ package com.example.softwaredesign;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 
 public abstract class Creature {
@@ -167,7 +167,7 @@ class Bird extends Creature {
         setHungry(false);
         setFlying(false);
         setEnvironment(env);
-        setInventory( new HashMap<>());
+        setInventory( new EnumMap<>(Food.class));
         setName("Bird");
     }
 
@@ -263,7 +263,7 @@ class Vampire extends Creature {
         setHungry(false);
         setBurning(false);
         setEnvironment(env);
-        setInventory(new HashMap<>());
+        setInventory(new EnumMap<>(Food.class));
         setName("Vampire");
     }
 
@@ -331,8 +331,7 @@ class Vampire extends Creature {
             Screen.stopBurning();
             setBurning(false);
         }
-
-        if(getBurning()){
+        if(Boolean.TRUE.equals(getBurning())){
             getHealth().decreaseVital(5);
         }
     }
@@ -347,7 +346,7 @@ class Alien extends Creature {
         initVitals();
         setHungry(false);
         setEnvironment(env);
-        setInventory(new HashMap<>());
+        setInventory(new EnumMap<>(Food.class));
         setName("Alien");
     }
 
