@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 
+import java.util.Optional;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -108,8 +109,8 @@ public class Engine {
         alert.setTitle("Exiting the game!!! ");
         alert.setHeaderText("*ALERT* Quitting Vivarium game");
         alert.setContentText("Are you sure you want to quit “Vivarium” game??? ");
-
-        if(alert.showAndWait().get() == ButtonType.OK){
+        Optional<ButtonType> optional = alert.showAndWait();
+        if(optional.isPresent() && optional.get() == ButtonType.OK){
             if(executor != null) {
                 executor.shutdown();
             }
