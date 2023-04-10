@@ -3,7 +3,7 @@ module com.example.softwaredesign {
     requires javafx.fxml;
 
     requires org.controlsfx.controls;
-    requires com.almasb.fxgl.all;
+    requires org.kordamp.bootstrapfx.core;
 
     opens com.example.softwaredesign to javafx.fxml;
     exports com.example.softwaredesign;

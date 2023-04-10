@@ -1,7 +1,6 @@
 plugins {
     id 'java'
     id 'application'
-    id 'org.javamodularity.moduleplugin' version '1.8.12'
     id 'org.openjfx.javafxplugin' version '0.0.13'
     id 'org.beryx.jlink' version '2.25.0'
 }
@@ -14,7 +13,7 @@ repositories {
 }
 
 ext {
-    junitVersion = '5.9.1'
+    junitVersion = '5.8.2'
 }
 
 sourceCompatibility = '11'
@@ -26,19 +25,20 @@ tasks.withType(JavaCompile) {
 
 application {
     mainModule = 'com.example.softwaredesign'
-    mainClass = 'com.example.softwaredesign.HelloApplication'
+    mainClass = 'com.example.softwaredesign.Main'
 }
 
 javafx {
-    version = '17.0.2'
-    modules = ['javafx.controls', 'javafx.fxml', 'javafx.media']
+    version = '19'
+    modules = ['javafx.controls', 'javafx.fxml']
 }
 
 dependencies {
-    implementation('org.controlsfx:controlsfx:11.1.2')
-    implementation('com.github.almasb:fxgl:11.17') {
+    implementation('org.controlsfx:controlsfx:11.1.1')
+    implementation('net.synedra:validatorfx:0.3.1') {
         exclude(group: 'org.openjfx')
     }
+    implementation('org.kordamp.bootstrapfx:bootstrapfx-core:0.4.0')
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
